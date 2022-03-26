@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CoderConnect-Web.iml" filepath="$PROJECT_DIR$/.idea/CoderConnect-Web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CoderConnect-SpringBoot.iml" filepath="$PROJECT_DIR$/.idea/CoderConnect-SpringBoot.iml" />
       <module fileurl="file://$PROJECT_DIR$/coco/coco.iml" filepath="$PROJECT_DIR$/coco/coco.iml" />
     </modules>
   </component>
