@@ -11,6 +11,7 @@ import java.util.Collections;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
