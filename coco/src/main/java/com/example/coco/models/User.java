@@ -18,16 +18,9 @@ import java.util.Collections;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    @SequenceGenerator(
-            name = "appUser_sequence",
-            sequenceName = "appUser_sequence",
-            allocationSize = 1
-
-    )
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "appUser_sequence"
+            strategy = GenerationType.IDENTITY
     )
     private long userId;
     private String name;

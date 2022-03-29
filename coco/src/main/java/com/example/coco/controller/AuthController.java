@@ -2,6 +2,7 @@ package com.example.coco.controller;
 
 
 import com.example.coco.dto.RegisterRequest;
+import com.example.coco.models.User;
 import com.example.coco.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/signup")
-    public void signUp(@RequestBody RegisterRequest registerRequest){
-        authService.signUp(registerRequest);
+    public String signUp(@RequestBody RegisterRequest registerRequest){
+      return authService.signUp(registerRequest);
     }
 }
