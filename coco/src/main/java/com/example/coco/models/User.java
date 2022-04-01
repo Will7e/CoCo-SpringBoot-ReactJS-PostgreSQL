@@ -25,9 +25,13 @@ public class User implements UserDetails {
     private long userId;
     private String name;
     private String userName;
-    private String passwords;
+    private String password;
     private String email;
-
+    private String occupation;
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+    private String Presentation;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private boolean enabled;
@@ -43,13 +47,15 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return passwords;
+        return password;
     }
 
     @Override
     public String getUsername() {
         return userName;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -69,5 +75,7 @@ public class User implements UserDetails {
     public boolean isEnabled(){
         return enabled;
     }
+
+
 
 }

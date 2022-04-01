@@ -9,9 +9,8 @@ public class UserInterest {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer xRefId;
-    private Integer id;
-    private Integer contactId;
-    private Integer searchId;
+    private Integer userId;
+    private Integer interestId;
 
     public UserInterest() {
     }
@@ -24,27 +23,19 @@ public class UserInterest {
         this.xRefId = xRefId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getContactId() {
-        return contactId;
+    public Integer getInterestId() {
+        return interestId;
     }
 
-    public void setContactId(Integer contactId) {
-        this.contactId = contactId;
-    }
-
-    public Integer getSearchId() {
-        return searchId;
-    }
-
-    public void setSearchId(Integer searchId) {
-        this.searchId = searchId;
+    public void setInterestId(Integer interestId) {
+        this.interestId = interestId;
     }
 }

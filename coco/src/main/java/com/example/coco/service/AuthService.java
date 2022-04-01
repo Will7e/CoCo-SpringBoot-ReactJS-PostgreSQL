@@ -5,7 +5,6 @@ import com.example.coco.dao.UserDAO;
 import com.example.coco.dto.RegisterRequest;
 import com.example.coco.models.User;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
@@ -22,7 +21,7 @@ public class AuthService {
         newUser.setName(registerRequest.getName());
         newUser.setUserName(registerRequest.getUserName());
         newUser.setEmail(registerRequest.getEmail());
-        newUser.setPasswords(registerRequest.getPasswords());
+        newUser.setPassword(registerRequest.getPasswords());
 
 
         userDAO.saveUser(newUser);
