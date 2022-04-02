@@ -12,10 +12,9 @@ import java.util.Collections;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -23,15 +22,24 @@ public class User implements UserDetails {
             strategy = GenerationType.IDENTITY
     )
     private long userId;
-    private String name;
-    private String userName;
-    private String passwords;
+    private String firstName;
+    private String lastName;
+    private String password;
     private String email;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private boolean enabled;
-    private boolean locked;
+
+    private Boolean enabled = false;
+    private Boolean locked = false;
+
+    public User(String firstName,String lastName, String password, String email, UserRole userRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.userRole = userRole;
+    }
 
 
     @Override
@@ -43,12 +51,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return passwords;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override
