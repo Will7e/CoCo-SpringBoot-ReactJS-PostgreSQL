@@ -37,7 +37,7 @@ public class AuthService {
                 UserRole.USER
         ));
         String link = "http://localhost:8080/api/auth/confirm?token=" + token;
-        emailService.sendEmail(registerRequest.getEmail(),emailService.buildEmail(registerRequest.getFirstName(),link));
+        emailService.sendEmail(registerRequest.getEmail(),emailService.confirmMail(link));
         return token;
     }
 
@@ -61,7 +61,7 @@ public class AuthService {
                 tokenToConfirm.getUser().getEmail()
         );
 
-        return "confirmed";
+        return emailService.emailVerified();
     }
 
 
