@@ -22,6 +22,7 @@ public class  UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final static String USER_NOT_FOUND = "User with Email: %s not found";
     private final ConfirmationTokenDAO confirmationTokenDAO;
+    private final EmailService emailService;
 
 
     @Override
@@ -36,9 +37,12 @@ public class  UserService implements UserDetailsService {
                 .findUserByEmail(user.getEmail())
                 .isPresent();
 
-        if (userExist){
+        if (userExist && !user.getEnabled()) {
+            throw new IllegalStateException("Please activate your account");
+        }else if (userExist) {
             throw  new IllegalStateException("Email already taken");
         }
+
        String encodedPassword = passwordEncoder.bCryptPasswordEncoder()
                 .encode(user.getPassword());
         user.setPassword(encodedPassword);

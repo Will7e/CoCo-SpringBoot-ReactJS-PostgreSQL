@@ -18,8 +18,10 @@ import java.time.LocalDateTime;
 public class AuthService {
     UserService userService;
     UserDAO userDAO;
-    EmailValidationService emailValidationService;
+    EmailValidationService emailValidationService; 
     ConfirmationTokenDAO confirmationTokenDAO;
+    EmailService emailService;
+
 
 
     public String signUp(RegisterRequest registerRequest){
@@ -28,12 +30,15 @@ public class AuthService {
         if (!isValidEmail){
             throw new IllegalStateException("Email is not valid");
         }
-        return userService.signUpUser(new User(registerRequest.getFirstName(),
+        String token = userService.signUpUser(new User(registerRequest.getFirstName(),
                 registerRequest.getLastName(),
                 registerRequest.getPassword(),
                 registerRequest.getEmail(),
                 UserRole.USER
-                ));
+        ));
+        String link = "http://localhost:8080/api/auth/confirm?token=" + token;
+        emailService.sendEmail(registerRequest.getEmail(),emailService.buildEmail(registerRequest.getFirstName(),link));
+        return token;
     }
 
     @Transactional
@@ -58,5 +63,7 @@ public class AuthService {
 
         return "confirmed";
     }
+
+
 
 }

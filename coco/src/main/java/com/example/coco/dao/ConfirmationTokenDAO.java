@@ -21,9 +21,15 @@ public class ConfirmationTokenDAO {
        return confirmationTokenRepository.save(confirmationToken);
     }
 
+    public Optional<ConfirmationToken> findTokenByUserId(Long id){
+        return confirmationTokenRepository.findConfirmationTokenByUserUserId(id);
+    }
+
     public Optional<ConfirmationToken> findByToken(String token){
         return confirmationTokenRepository.findByToken(token);
     }
+
+
 
     public int updateConfirmedToken(String token, LocalDateTime localDateTime){
         return confirmationTokenRepository.updateConfirmedToken(token,localDateTime);
