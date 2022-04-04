@@ -1,6 +1,6 @@
 package com.example.coco.service;
 
-import com.example.coco.config.PasswordEncoder;
+import com.example.coco.security.PasswordEncoder;
 import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
 import com.example.coco.models.User;
@@ -18,11 +18,11 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class  UserService implements UserDetailsService {
-    private final UserDAO userDAO;
-    private final PasswordEncoder passwordEncoder;
-    private final static String USER_NOT_FOUND = "User with Email: %s not found";
-    private final ConfirmationTokenDAO confirmationTokenDAO;
-    private final EmailService emailService;
+    private UserDAO userDAO;
+    private  PasswordEncoder passwordEncoder;
+    private static String USER_NOT_FOUND = "User with Email: %s not found";
+    private  ConfirmationTokenDAO confirmationTokenDAO;
+
 
 
     @Override

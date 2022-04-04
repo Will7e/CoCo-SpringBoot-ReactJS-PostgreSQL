@@ -2,11 +2,14 @@ package com.example.coco.service;
 
 import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
+import com.example.coco.dto.LoginRequest;
 import com.example.coco.dto.RegisterRequest;
 import com.example.coco.models.User;
 import com.example.coco.models.UserRole;
 import com.example.coco.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,7 @@ public class AuthService {
 
 
 
+    @Transactional
     public String signUp(RegisterRequest registerRequest){
         boolean isValidEmail = emailValidationService
                 .test(registerRequest.getEmail());
@@ -48,7 +52,7 @@ public class AuthService {
                 .orElseThrow( ()-> new IllegalStateException("Token not found"));
 
         if (tokenToConfirm.getConfirmAt() != null){
-            throw new IllegalStateException ("Email already confirmed");
+            return emailService.emailVerified();
         }
         LocalDateTime expiredAt = tokenToConfirm.getExpiredAt();
 
@@ -63,6 +67,8 @@ public class AuthService {
 
         return emailService.emailVerified();
     }
+
+
 
 
 

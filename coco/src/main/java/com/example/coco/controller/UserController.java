@@ -1,6 +1,7 @@
 package com.example.coco.controller;
 
 
+import com.example.coco.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("home")
 @AllArgsConstructor
 public class UserController {
 
+    @GetMapping()
+    public String userPage(){
 
-
-    @GetMapping("/{id}")
-    public String userPage(@RequestParam("id") UUID uuid){
-
-        return "";
+        return "Hello there";
     }
+
+
 }
 

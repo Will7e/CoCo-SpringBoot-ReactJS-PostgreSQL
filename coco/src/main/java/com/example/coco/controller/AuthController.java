@@ -1,6 +1,7 @@
 package com.example.coco.controller;
 
 
+import com.example.coco.dto.LoginRequest;
 import com.example.coco.dto.RegisterRequest;
 import com.example.coco.models.User;
 import com.example.coco.service.AuthService;
@@ -24,5 +25,11 @@ public class AuthController {
     @GetMapping("/confirm")
     public String confirm(@RequestParam("token") String token){
         return authService.confirmToken(token);
+    }
+
+    @GetMapping("/login")
+    public String login(){
+
+        return "here";
     }
 }
