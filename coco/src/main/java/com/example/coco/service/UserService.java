@@ -6,12 +6,14 @@ import com.example.coco.dao.UserDAO;
 import com.example.coco.models.User;
 import com.example.coco.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -22,8 +24,6 @@ public class  UserService implements UserDetailsService {
     private  PasswordEncoder passwordEncoder;
     private static String USER_NOT_FOUND = "User with Email: %s not found";
     private  ConfirmationTokenDAO confirmationTokenDAO;
-
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -63,8 +63,17 @@ public class  UserService implements UserDetailsService {
 
         return token;
     }
-
     public int enableUser(String email){
         return userDAO.enableUser(email);
+    }
+
+    public Optional<User> getUserFirstName(User user){
+        return userDAO.findUserById(user.getUserId());
+
+    }
+
+    public long currentUserId(@AuthenticationPrincipal User user ){
+        return user.getUserId();
+
     }
 }
