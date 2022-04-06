@@ -22,8 +22,7 @@ public class User implements UserDetails {
             strategy = GenerationType.IDENTITY
     )
     private long userId;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String password;
     private String email;
 
@@ -33,9 +32,8 @@ public class User implements UserDetails {
     private Boolean enabled = false;
     private Boolean locked = false;
 
-    public User(String firstName,String lastName, String password, String email, UserRole userRole) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String fullName, String password, String email, UserRole userRole) {
+        this.fullName = fullName;
         this.password = password;
         this.email = email;
         this.userRole = userRole;

@@ -34,8 +34,7 @@ public class AuthService {
         if (!isValidEmail){
             throw new IllegalStateException("Email is not valid");
         }
-        String token = userService.signUpUser(new User(registerRequest.getFirstName(),
-                registerRequest.getLastName(),
+        String token = userService.signUpUser(new User(registerRequest.getFullName(),
                 registerRequest.getPassword(),
                 registerRequest.getEmail(),
                 UserRole.USER

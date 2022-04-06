@@ -8,8 +8,8 @@ import {
   BrowserRouter,
   Link,
 } from "react-router-dom";
-import SignInForm from "./pages/SignInForm";
-import SignUpForm from "./pages/SignUpForm";
+import SignInForm from "./components/SignInForm";
+import SignUpForm from "./components/SignUpForm";
 function App() {
   return (
     <BrowserRouter>

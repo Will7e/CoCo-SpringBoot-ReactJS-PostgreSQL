@@ -7,6 +7,10 @@ import com.example.coco.models.User;
 import com.example.coco.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     AuthService authService;
+    AuthenticationManager authenticationManager;
 
     @PostMapping("/signup")
     public String signUp(@RequestBody RegisterRequest registerRequest){
@@ -28,8 +33,12 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login(@RequestBody LoginRequest loginRequest){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication );
 
-        return "here";
+        return "success";
     }
 }
