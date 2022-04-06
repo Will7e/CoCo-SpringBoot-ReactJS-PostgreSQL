@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,5 +76,9 @@ public class  UserService implements UserDetailsService {
     public long currentUserId(@AuthenticationPrincipal User user ){
         return user.getUserId();
 
+    }
+
+    public List<User> findAllUser(User user) {
+        return userDAO.findAllUser(user);
     }
 }

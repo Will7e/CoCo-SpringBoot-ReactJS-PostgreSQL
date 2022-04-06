@@ -1,4 +1,4 @@
-package com.example.coco.controller;
+package com.example.coco.api;
 
 
 import com.example.coco.models.User;
@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("home")
@@ -19,5 +21,11 @@ public class UserController {
     public long userLoggedId(User user){
         return userService.currentUserId(user);
     }
+
+    @GetMapping("/user")
+    public List<User> userList (User user){
+        return userService.findAllUser(user);
+    }
+
 }
 

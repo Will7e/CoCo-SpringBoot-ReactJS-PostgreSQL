@@ -29,7 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and().formLogin()
-                .defaultSuccessUrl("/home");
+                .loginPage("/api/auth/login")
+                .defaultSuccessUrl("/home")
+                .and()
+                .logout().logoutSuccessUrl("/api/auth/login");
 
     }
 

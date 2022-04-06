@@ -5,6 +5,7 @@ import com.example.coco.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,5 +27,9 @@ public class UserDAO {
 
     public int enableUser(String email){
         return userRepository.enableAppUser(email);
+    }
+
+    public List<User> findAllUser(User user){
+        return userRepository.findAll();
     }
 }
