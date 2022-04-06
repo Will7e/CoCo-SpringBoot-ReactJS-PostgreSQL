@@ -1,48 +1,67 @@
 package com.example.coco.controller;
 
 
-import com.example.coco.models.User;
+import com.example.coco.models.*;
 import com.example.coco.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("home")
-@AllArgsConstructor
-public class UserController {
-    UserService userService;
-
-
-    @GetMapping()
-    public long userLoggedId(User user){
-        return userService.currentUserId(user);
-    }
-}
-
-import com.example.coco.models.Interest;
-import com.example.coco.models.Skill;
 import com.example.coco.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/user")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping()
+    public long userLoggedId(User user){
+        return userService.currentUserId(user);
     }
+
 
     @GetMapping("/interests/{id}")
     public List<Interest> getInterestsByUserId(@PathVariable("id") long id){
         return userService.getInterestsByUserId(id);
     }
 
+    //Location mappings:
+    @GetMapping("/location/all")
+    public List<Location> getAllLocations(){
+        return userService.getAllLocations();
+    }
+
+    @PostMapping("/location/add")
+    public void addLocation(@RequestBody Location location){
+        userService.addLocation(location);
+    }
+    //Search methods:
+
+    @PostMapping("/search/add")
+    public void addSearch(@RequestBody Search search){
+        userService.addSearch(search);
+    }
+
+
+    public List<Search> getMatchingSearches(){
+        return userService.getMatchingSearches(user);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @PostMapping("/search/matches")
+    public int searchNoOfMatches(@RequestBody Search search){
+        return userService.getMatchingUsers(search).size();
+    }
     //Skill methods:
 
     @GetMapping("/skills/all")
@@ -61,8 +80,9 @@ public class UserController {
         userService.addSkill(skill);
     }
 
-    public List<String> mySkills(long id){
-        return userService.getMySkills(id);
+    @GetMapping("/skills/{id}")
+    public List<String> getMySkillNames(@PathVariable("id") long id){
+        return userService.getMySkillNames(id);
     }
 
 

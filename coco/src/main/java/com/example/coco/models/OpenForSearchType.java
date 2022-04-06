@@ -1,18 +1,20 @@
 package com.example.coco.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "userinterests")
-public class UserInterest {
-
+public class OpenForSearchType {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long xRefId;
     private Long userId;
-    private Long interestId;
+    private Long searchTypeId;
 
-    public UserInterest() {
+    public OpenForSearchType() {
     }
 
     public Long getxRefId() {
@@ -31,11 +33,12 @@ public class UserInterest {
         this.userId = userId;
     }
 
-    public Long getInterestId() {
-        return interestId;
+    public Long getSearchTypeId() {
+        return searchTypeId;
     }
 
-    public void setInterestId(Long interestId) {
-        this.interestId = interestId;
+    public void setSearchTypeId(Long searchTypeId) {
+        this.searchTypeId = searchTypeId;
     }
 }
+

@@ -1,14 +1,10 @@
 package com.example.coco.service;
 
-import com.example.coco.dao.InterestDAO;
+import com.example.coco.models.*;
 import com.example.coco.security.PasswordEncoder;
 import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
 import com.example.coco.dao.UserInterestDAO;
-import com.example.coco.models.Interest;
-import com.example.coco.models.Skill;
-import com.example.coco.models.UserInterest;
-import com.example.coco.models.User;
 import com.example.coco.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,27 +13,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserDAO userDAO;
-    private final InterestDAO interestDAO;
     private final UserInterestDAO userInterestDAO;
     private final static String USER_NOT_FOUND = "User with Email: %s not found";
-
-public class  UserService implements UserDetailsService {
-    private UserDAO userDAO;
     private  PasswordEncoder passwordEncoder;
-    private static String USER_NOT_FOUND = "User with Email: %s not found";
     private  ConfirmationTokenDAO confirmationTokenDAO;
 
     @Override
@@ -92,15 +81,20 @@ public class  UserService implements UserDetailsService {
 
     }
 
+    // Search methods
+    public void addSearch(Search search) {
+        userDAO.addSearch(search);
+    }
+
     // Interest methods
     public List<Interest> getInterestsByUserId(long id) {
-        List<UserInterest> userInterests =  userInterestDAO.getUserInterests().stream()
+        List<UserInterest> userInterests =  userDAO.getAllUserInterests().stream()
                 .filter(i -> i.getUserId() == id)
                 .collect(Collectors.toList());
 
         List<Interest> interests = null;
         for (UserInterest userInterest:userInterests) {
-            Optional<Interest> maybeInterest = interestDAO.getInterestById(userInterest.getInterestId());
+            Optional<Interest> maybeInterest = userDAO.getInterestById(userInterest.getInterestId());
             if(maybeInterest.isPresent()){ interests.add(maybeInterest.get());}
         }
 
@@ -116,7 +110,94 @@ public class  UserService implements UserDetailsService {
         userDAO.addSkill(skill);
     }
 
-    public List<String> getMySkills(long id) {
-        List<Skill> skills = userDAO.getSkillsByUser(id);
+    public List<String> getMySkillNames(long id) {
+        List<UserSkill> myUserSkills = userDAO.getAllUserSkills().stream()
+                .filter(us -> us.getUserId() == id)
+                .collect(Collectors.toList());
+        List<Skill> allSkills = (List<Skill>)  userDAO.getAllSkills();
+        List<String> mySkills = null;
+        for (UserSkill userSkill:myUserSkills) {
+            for (Skill skill:allSkills) {
+                if(skill.getId() == userSkill.getSkillId()){
+                    mySkills.add(skill.getName());
+                }
+            }
+
+        }
+        return mySkills;
+    }
+
+    /**
+     * returns list of searches in the db that user is a match to.
+     * @param user
+     * @return List of searches
+     */
+    public List<Search> getMatchingSearches(User user) {
+        List<Search> matchingSearches = userDAO.getAllSearches().stream()
+                .filter(s->matchUserToSearch(user, s))
+                .collect(Collectors.toList());
+        return matchingSearches;
+    }
+
+    /**
+     * returns true if user is a match to search
+     * @param user
+     * @param search
+     * @return boolean match
+     */
+    private boolean matchUserToSearch(User user, Search search){
+        // check if user is open to contacts of SearchType
+        List<OpenForSearchType> isOpenTo =  userDAO.getIsOpenTo(user.getUserId()).stream()
+                .filter(o -> o.getUserId() == user.getUserId())
+                .filter(o -> o.getSearchTypeId().equals(search.getSearchTypeId()))
+                .collect(Collectors.toList());
+        if(isOpenTo.size() == 0) return false;
+        // check location
+        if(!(search.getLocationId() == null || search.getLocationId() == user.getLocation().getId())) return false;
+       // check if user have all the skills in the search
+        List<SearchSkill> searchedSkills = userDAO.getSkillsInSearches().stream()
+                .filter(s -> s.getSearchId() == search.getSearchId())
+                .collect(Collectors.toList());
+        List<UserSkill> userSkills = userDAO.getAllUserSkills().stream()
+                .filter(s -> s.getUserId() == user.getUserId())
+                .collect(Collectors.toList());
+        for (SearchSkill searchedSkill:searchedSkills) {
+            boolean foundSkill = false;
+            for (UserSkill userSkill:userSkills) {
+                if (searchedSkill.getSkillId() == userSkill.getSkillId()) foundSkill = true;
+            }
+            if(!foundSkill) return false; //if we find one unmatched skill - no match!
+        }
+        // check if user have all interests in the search
+        List<SearchInterest> searchedInterests = userDAO.getInterestsInSearches().stream()
+                .filter(i -> i.getSearchId() == search.getSearchId())
+                .collect(Collectors.toList());
+        List<UserInterest> userInterests = userDAO.getAllUserInterests().stream()
+                .filter(i -> i.getUserId() == user.getUserId())
+                .collect(Collectors.toList());
+        for (SearchInterest searchedInterest:searchedInterests) {
+            boolean foundInterest = false;
+            for (UserInterest userInterest:userInterests) {
+                if (searchedInterest.getInterestId().equals(userInterest.getInterestId())) foundInterest = true;
+            }
+            if(!foundInterest) return false; //if we find one unmatched interest - no match!
+        }
+        //if we got this far without returning false, consider it a match!
+        return true;
+    }
+
+    public List<User> getMatchingUsers(Search search) {
+        List<User> matchingUsers = userDAO.getAllUsers().stream()
+                .filter(u -> matchUserToSearch(u, search))
+                .collect(Collectors.toList());
+        return matchingUsers;
+    }
+
+    public List<Location> getAllLocations() {
+        return userDAO.getAllLocations();
+    }
+
+    public void addLocation(Location location) {
+        userDAO.addLocation(location);
     }
 }

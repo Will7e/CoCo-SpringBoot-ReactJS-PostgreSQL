@@ -34,7 +34,6 @@ public class User implements UserDetails {
     private String Presentation;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-
     private Boolean enabled = false;
     private Boolean locked = false;
 

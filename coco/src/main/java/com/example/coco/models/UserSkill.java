@@ -9,8 +9,8 @@ public class UserSkill {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer xRefId;
-    private Integer id;
-    private Integer searchId;
+    private Integer skillId;
+    private Integer userId;
 
     public UserSkill() {
     }
@@ -23,19 +23,19 @@ public class UserSkill {
         this.xRefId = xRefId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSkillId() {
+        return skillId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSkillId(Integer skillId) {
+        this.skillId = skillId;
     }
 
-    public Integer getSearchId() {
-        return searchId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSearchId(Integer searchId) {
-        this.searchId = searchId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
