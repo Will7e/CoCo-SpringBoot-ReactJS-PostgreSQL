@@ -1,22 +1,20 @@
 import React, { useState, useRef } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { Redirect } from "react-router-dom";
-import { login } from "../actions/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FacebookLoginButton,
   InstagramLoginButton,
 } from "react-social-login-buttons";
+import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/AuthService";
 
-function SignInForm(props) {
+function SignInForm() {
+  let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const form = useRef();
   const checkBtn = useRef();
-  const [loading, setLoading] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
-  const dispatch = useDispatch();
+
   const [signIn, setSignIn] = useState({
     email: "",
     password: "",
@@ -44,27 +42,35 @@ function SignInForm(props) {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setMessage("");
     setLoading(true);
+
     if (checkBtn.current.context._errors.length === 0) {
-      dispatch(login(signIn.email, signIn.password))
-        .then(() => {
-          props.history.push("/home");
+      AuthService.login(signIn.email, signIn.password).then(
+        () => {
+          navigate("/profile");
           window.location.reload();
-        })
-        .catch(() => {
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
           setLoading(false);
-        });
+          setMessage(resMessage);
+        }
+      );
     } else {
       setLoading(false);
     }
   };
-  if (isLoggedIn) {
-    return <Navigate to="/home" />;
-  }
 
   return (
     <div className="formCenter">
-      <form ref={form} className="formFields" onSubmit={handleLogin}>
+      <form className="formFields" onSubmit={handleLogin}>
         <div className="formField">
           <label className="formFieldLabel" htmlFor="email">
             E-Mail Address
@@ -96,9 +102,7 @@ function SignInForm(props) {
         </div>
 
         <div className="formField">
-          <button ref={checkBtn} className="formFieldButton">
-            Sign In
-          </button>{" "}
+          <button className="formFieldButton">Sign In</button>{" "}
           <Link to="/" className="formFieldLink">
             Create an account
           </Link>

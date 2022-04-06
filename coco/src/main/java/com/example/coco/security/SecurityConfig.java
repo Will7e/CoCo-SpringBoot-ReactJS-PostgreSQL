@@ -8,9 +8,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -18,23 +20,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     private PasswordEncoder passwordEncoder;
-
+    private AuthEntryPointJwt authEntryPointJwt;
 
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()
-                .disable()
-                .authorizeHttpRequests()
-                .antMatchers("/api/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and().formLogin()
-                .loginPage("/api/auth/login")
-                .defaultSuccessUrl("/home")
-                .and()
-                .logout().logoutSuccessUrl("/api/auth/login");
+        httpSecurity.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/test/**").permitAll()
+                .anyRequest().authenticated();
 
     }
 
@@ -51,5 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
 
     }
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean()throws Exception{
+        return super.authenticationManagerBean();
+    }
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
+
+
 
 }
