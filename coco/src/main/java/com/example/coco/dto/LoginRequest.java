@@ -1,13 +1,12 @@
 package com.example.coco.dto;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RegisterRequest {
-    private String firstName;
-    private String lastName;
+public class LoginRequest {
     private String email;
     private String password;
 }

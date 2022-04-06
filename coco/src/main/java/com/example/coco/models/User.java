@@ -23,8 +23,8 @@ public class User implements UserDetails {
             strategy = GenerationType.IDENTITY
     )
     private long userId;
-    private String name;
-    private String userName;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
     private String occupation;
@@ -34,8 +34,17 @@ public class User implements UserDetails {
     private String Presentation;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private boolean enabled;
-    private boolean locked;
+
+    private Boolean enabled = false;
+    private Boolean locked = false;
+
+    public User(String firstName,String lastName, String password, String email, UserRole userRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.userRole = userRole;
+    }
 
 
     @Override
@@ -52,10 +61,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
-
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -75,7 +82,5 @@ public class User implements UserDetails {
     public boolean isEnabled(){
         return enabled;
     }
-
-
 
 }
