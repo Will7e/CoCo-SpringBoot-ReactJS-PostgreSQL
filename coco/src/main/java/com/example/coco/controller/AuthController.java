@@ -45,8 +45,8 @@ public class AuthController {
         return authService.confirmToken(token);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    @GetMapping("/signin")
+    public String authenticateUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -61,10 +61,12 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+        ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(user.getUserId(),
-                        user.getUsername(),
+                        user.getFullName(),
                         user.getEmail(),
                         roles));
+
+        return "It works";
     }
 }

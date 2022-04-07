@@ -45,32 +45,28 @@ function SignInForm() {
     setMessage("");
     setLoading(true);
 
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(signIn.email, signIn.password).then(
-        () => {
-          navigate("/profile");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+    AuthService.login(signIn.email, signIn.password).then(
+      () => {
+        navigate("/profile");
+        window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-          setLoading(false);
-          setMessage(resMessage);
-        }
-      );
-    } else {
-      setLoading(false);
-    }
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
   };
 
   return (
     <div className="formCenter">
-      <form className="formFields" onSubmit={handleLogin}>
+      <form ref={form} className="formFields" onSubmit={handleLogin}>
         <div className="formField">
           <label className="formFieldLabel" htmlFor="email">
             E-Mail Address

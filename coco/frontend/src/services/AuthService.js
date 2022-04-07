@@ -1,8 +1,8 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/auth/";
+axios.defaults.baseURL = "http:localhost:8080";
 
 function register(fullName, email, password) {
-  return axios.post(API_URL + "signup", {
+  return axios.post("/api/auth/signup", {
     fullName,
     email,
     password,
@@ -10,7 +10,7 @@ function register(fullName, email, password) {
 }
 function login(email, password) {
   return axios
-    .post(API_URL + "signin", {
+    .post("/api/auth/signin", {
       email,
       password,
     })

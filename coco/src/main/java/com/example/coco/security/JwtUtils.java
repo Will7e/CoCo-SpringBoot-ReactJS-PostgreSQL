@@ -9,6 +9,7 @@ import com.example.coco.models.User;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 import io.jsonwebtoken.*;
@@ -17,9 +18,9 @@ import io.jsonwebtoken.*;
 @Slf4j
 @Data
 public class JwtUtils {
-    private String jwtSecret;
-    private int jwtExpirationMs;
-    private String jwtCookie;
+    private String jwtSecret = "qwertyuiopasdfghjklzxcvbnm";
+    private int jwtExpirationMs = 10;
+    private String jwtCookie ="asdasdasdad";
 
 
     public String getJwtFromCookies(HttpServletRequest request) {
@@ -31,8 +32,8 @@ public class JwtUtils {
         }
     }
 
-    public ResponseCookie generateJwtCookie(User userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    public ResponseCookie generateJwtCookie(@AuthenticationPrincipal User userPrincipal) {
+        String jwt = generateTokenFromUsername(userPrincipal.getFullName());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
         return cookie;
     }
@@ -65,9 +66,9 @@ public class JwtUtils {
         return false;
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromUsername(String fullname) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(fullname)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
