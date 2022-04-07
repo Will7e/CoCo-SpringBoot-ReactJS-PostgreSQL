@@ -50,7 +50,8 @@ public class UserController {
     }
 
 
-    public List<Search> getMatchingSearches(){
+    // skall kopplas till inloggad användare!
+    public List<Search> getMatchingSearches(User user){
         return userService.getMatchingSearches(user);
     }
 
