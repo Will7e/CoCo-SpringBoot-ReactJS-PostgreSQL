@@ -1,6 +1,7 @@
 package com.example.coco.security;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +19,9 @@ import io.jsonwebtoken.*;
 @Slf4j
 @Data
 public class JwtUtils {
-    private String jwtSecret = "qwertyuiopasdfghjklzxcvbnm";
-    private int jwtExpirationMs = 10;
-    private String jwtCookie ="asdasdasdad";
+    private String jwtSecret = UUID.randomUUID().toString();
+    private int jwtExpirationMs = 60;
+    private String jwtCookie = UUID.randomUUID().toString();
 
 
     public String getJwtFromCookies(HttpServletRequest request) {
