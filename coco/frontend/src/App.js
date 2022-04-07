@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import SignInForm from "./components/SignInForm";
 import SignUpForm from "./components/SignUpForm";
+import Profile from "./components/Profile";
 function App() {
   return (
     <BrowserRouter>
@@ -54,6 +55,7 @@ function App() {
           <Routes>
             <Route path="/" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </div>
