@@ -33,57 +33,20 @@ public class UserDAO {
         return userRepository.enableAppUser(email);
     }
 
-
-    //Skill Methods:
-    public Iterable<Skill> getAllSkills() {
-        return skillRepository.findAll();
-    }
-
-
-    public void addSkill(Skill skill) {
-        skillRepository.save(skill);
-    }
-
-
-    public void addSearch(Search search) {
-        searchRepository.save(search);
-    }
-
-    public List<Search> getAllSearches() {
-        return searchRepository.findAll();
-    }
-
-
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public List<Location> getAllLocations() {
-        return (List<Location>) locationRepository.findAll();
-    }
-
-    public void addLocation(Location location) {
-        locationRepository.save(location);
-    }
-
-    public Optional<Interest> getInterestById(Long interestId) {
-        return interestRepository.findById(interestId);
-    }
+    // Interest Methods:
 
     public Interest addInterest(Interest interest) {
         return interestRepository.save(interest);
-
     }
 
     public List<Interest> getAllInterests() {
-        return (List<Interest>) interestRepository.findAll();
+        return interestRepository.findAll();
     }
 
     public Interest addInterestToUser(long userId, long id) {
         Optional<User> maybeUser = userRepository.findById(userId);
         Optional<Interest> maybeInterest = interestRepository.findById(id);
-        if(maybeInterest.isEmpty() || maybeUser.isEmpty()) return null;
+        if (maybeInterest.isEmpty() || maybeUser.isEmpty()) return null;
 
         User user = maybeUser.get();
         Interest interest = maybeInterest.get();
@@ -93,11 +56,49 @@ public class UserDAO {
         return interest;
     }
 
-    public Location addLocationToUser(long userId, long id) {
+    // Location Methods:
+
+    public List<Location> getAllLocations() {
+        return locationRepository.findAll();
+    }
+    public Location addLocation(Location location) {
+        return locationRepository.save(location);
+    }
+
+    // Search Methods:
+
+    public void addSearch(Search search) {
+        searchRepository.save(search);
+    }
+
+    public List<Search> getAllSearches() {
+        return searchRepository.findAll();
+    }
+
+    // Skill Methods:
+
+    public Iterable<Skill> getAllSkills() {
+        return skillRepository.findAll();
+    }
+
+    public Skill addSkill(Skill skill) {
+        return skillRepository.save(skill);
+    }
+
+    // User Methods
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
+
+
+    public Location setUsersLocation(long userId, long id) {
 
         Optional<User> maybeUser = userRepository.findById(userId);
         Optional<Location> maybeLocation = locationRepository.findById(id);
-        if(maybeLocation.isEmpty() || maybeUser.isEmpty()) return null;
+        if (maybeLocation.isEmpty() || maybeUser.isEmpty()) return null;
 
         User user = maybeUser.get();
         Location location = maybeLocation.get();
