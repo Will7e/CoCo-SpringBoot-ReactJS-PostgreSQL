@@ -26,10 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests()
                 .antMatchers("/api/auth/**")
                 .permitAll()
+                .antMatchers("/api/**").permitAll()
                 .anyRequest()
-                .authenticated()
-                .and().formLogin()
-                .defaultSuccessUrl("/home");
+                .authenticated();
 
     }
 
@@ -37,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.authenticationProvider(daoAuthenticationProvider());
     }
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

@@ -1,10 +1,8 @@
 package com.example.coco.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "searches")
@@ -15,6 +13,10 @@ public class Search {
     Integer userId, searchTypeId, locationId;
     Date birthYear;
     String searchPresentation, occupation;
+    @ManyToMany
+    List<Interest> searchInterests;
+    @ManyToMany
+    List<Skill> searchSkils;
 
     public Search() {
     }
@@ -73,5 +75,21 @@ public class Search {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public List<Interest> getSearchInterests() {
+        return searchInterests;
+    }
+
+    public void setSearchInterests(List<Interest> searchInterests) {
+        this.searchInterests = searchInterests;
+    }
+
+    public List<Skill> getSearchSkils() {
+        return searchSkils;
+    }
+
+    public void setSearchSkils(List<Skill> searchSkils) {
+        this.searchSkils = searchSkils;
     }
 }

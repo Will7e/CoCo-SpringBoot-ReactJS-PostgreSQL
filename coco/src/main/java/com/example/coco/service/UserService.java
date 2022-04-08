@@ -4,7 +4,6 @@ import com.example.coco.models.*;
 import com.example.coco.security.PasswordEncoder;
 import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
-import com.example.coco.dao.UserInterestDAO;
 import com.example.coco.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +23,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserDAO userDAO;
-    private final UserInterestDAO userInterestDAO;
     private final static String USER_NOT_FOUND = "User with Email: %s not found";
     private  PasswordEncoder passwordEncoder;
     private  ConfirmationTokenDAO confirmationTokenDAO;
@@ -87,19 +85,6 @@ public class UserService implements UserDetailsService {
     }
 
     // Interest methods
-    public List<Interest> getInterestsByUserId(long id) {
-        List<UserInterest> userInterests =  userDAO.getAllUserInterests().stream()
-                .filter(i -> i.getUserId() == id)
-                .collect(Collectors.toList());
-
-        List<Interest> interests = null;
-        for (UserInterest userInterest:userInterests) {
-            Optional<Interest> maybeInterest = userDAO.getInterestById(userInterest.getInterestId());
-            if(maybeInterest.isPresent()){ interests.add(maybeInterest.get());}
-        }
-
-        return interests;
-    }
 
     //Skill methods
     public List<Skill> getAllSkills() {
@@ -110,21 +95,8 @@ public class UserService implements UserDetailsService {
         userDAO.addSkill(skill);
     }
 
-    public List<String> getMySkillNames(long id) {
-        List<UserSkill> myUserSkills = userDAO.getAllUserSkills().stream()
-                .filter(us -> us.getUserId() == id)
-                .collect(Collectors.toList());
-        List<Skill> allSkills = (List<Skill>)  userDAO.getAllSkills();
-        List<String> mySkills = null;
-        for (UserSkill userSkill:myUserSkills) {
-            for (Skill skill:allSkills) {
-                if(skill.getId() == userSkill.getSkillId()){
-                    mySkills.add(skill.getName());
-                }
-            }
-
-        }
-        return mySkills;
+    public List<Skill> getMySkills(User user) {
+        return user.getSkills();
     }
 
     /**
@@ -147,40 +119,31 @@ public class UserService implements UserDetailsService {
      */
     private boolean matchUserToSearch(User user, Search search){
         // check if user is open to contacts of SearchType
-        List<OpenForSearchType> isOpenTo =  userDAO.getIsOpenTo(user.getUserId()).stream()
-                .filter(o -> o.getUserId() == user.getUserId())
-                .filter(o -> o.getSearchTypeId().equals(search.getSearchTypeId()))
+        List<SearchType> isOpenTo =  user.getOpenForSearchType().stream()
+                .filter(o -> o.getId().equals(search.getSearchTypeId()))
                 .collect(Collectors.toList());
         if(isOpenTo.size() == 0) return false;
         // check location
         if(!(search.getLocationId() == null || search.getLocationId() == user.getLocation().getId())) return false;
        // check if user have all the skills in the search
-        List<SearchSkill> searchedSkills = userDAO.getSkillsInSearches().stream()
-                .filter(s -> s.getSearchId() == search.getSearchId())
-                .collect(Collectors.toList());
-        List<UserSkill> userSkills = userDAO.getAllUserSkills().stream()
-                .filter(s -> s.getUserId() == user.getUserId())
-                .collect(Collectors.toList());
-        for (SearchSkill searchedSkill:searchedSkills) {
+        List<Skill> searchedSkills = search.getSearchSkils();
+        List<Skill> userSkills = user.getSkills();
+        for (Skill searchedSkill:searchedSkills) {
             boolean foundSkill = false;
-            for (UserSkill userSkill:userSkills) {
-                if (searchedSkill.getSkillId() == userSkill.getSkillId()) foundSkill = true;
+            for (Skill userSkill:userSkills) {
+                if (searchedSkill.getId() == userSkill.getId()) foundSkill = true;
             }
             if(!foundSkill) return false; //if we find one unmatched skill - no match!
         }
         // check if user have all interests in the search
-        List<SearchInterest> searchedInterests = userDAO.getInterestsInSearches().stream()
-                .filter(i -> i.getSearchId() == search.getSearchId())
-                .collect(Collectors.toList());
-        List<UserInterest> userInterests = userDAO.getAllUserInterests().stream()
-                .filter(i -> i.getUserId() == user.getUserId())
-                .collect(Collectors.toList());
-        for (SearchInterest searchedInterest:searchedInterests) {
+        List<Interest> searchedInterests = search.getSearchInterests();
+        List<Interest> userInterests = user.getInterests();
+        for (Interest searchedInterest:searchedInterests) {
             boolean foundInterest = false;
-            for (UserInterest userInterest:userInterests) {
-                if (searchedInterest.getInterestId().equals(userInterest.getInterestId())) foundInterest = true;
+            for (Interest userInterest:userInterests) {
+                if (searchedInterest.getId() == userInterest.getId()) foundInterest = true;
             }
-            if(!foundInterest) return false; //if we find one unmatched interest - no match!
+            if(!foundInterest) return false; //if we find one unmatched skill - no match!
         }
         //if we got this far without returning false, consider it a match!
         return true;
@@ -199,5 +162,21 @@ public class UserService implements UserDetailsService {
 
     public void addLocation(Location location) {
         userDAO.addLocation(location);
+    }
+
+    public Interest addInterest(Interest interest) {
+        return userDAO.addInterest(interest);
+    }
+
+    public List<Interest> getAllInterests() {
+        return userDAO.getAllInterests();
+    }
+
+    public Interest addInterestToUser(long userId, long id) {
+        return userDAO.addInterestToUser(userId, id);
+    }
+
+    public Location addLocationToUser(long userId, long id) {
+        return userDAO.addLocationToUser(userId, id);
     }
 }

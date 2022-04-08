@@ -5,7 +5,6 @@ import com.example.coco.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +13,8 @@ import java.util.Optional;
 public class UserDAO {
     UserRepository userRepository;
     SkillRepository skillRepository;
-    UserSkillRepository userSkillRepository;
     InterestRepository interestRepository;
-    UserInterestRepository userInterestRepository;
     SearchRepository searchRepository;
-    SearchSkillRepository searchSkillRepository;
-    SearchInterestRepository searchInterestRepository;
-    OpenForSearchTypeRepository openForSearchTypeRepository;
     LocationRepository locationRepository;
 
     public void saveUser(User user) {
@@ -45,9 +39,6 @@ public class UserDAO {
         return skillRepository.findAll();
     }
 
-    public List<UserSkill> getAllUserSkills() {
-        return (List<UserSkill>) userSkillRepository.findAll();
-    }
 
     public void addSkill(Skill skill) {
         skillRepository.save(skill);
@@ -59,24 +50,10 @@ public class UserDAO {
     }
 
     public List<Search> getAllSearches() {
-        return (List<Search>) searchRepository.findAll();
+        return searchRepository.findAll();
     }
 
-    public List<OpenForSearchType> getIsOpenTo(long userId) {
-        return (List<OpenForSearchType>) openForSearchTypeRepository.findAll();
-    }
 
-    public List<SearchSkill> getSkillsInSearches() {
-        return (List<SearchSkill> )searchSkillRepository.findAll();
-    }
-
-    public List<SearchInterest> getInterestsInSearches() {
-        return (List<SearchInterest>) searchInterestRepository.findAll();
-    }
-
-    public List<UserInterest> getAllUserInterests() {
-        return (List<UserInterest>) userInterestRepository;
-    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -90,13 +67,41 @@ public class UserDAO {
         locationRepository.save(location);
     }
 
-
-
-    public List<UserInterest> getUserInterests() {
-        return (List<UserInterest>) userInterestRepository.findAll();
-    }
-
     public Optional<Interest> getInterestById(Long interestId) {
         return interestRepository.findById(interestId);
+    }
+
+    public Interest addInterest(Interest interest) {
+        return interestRepository.save(interest);
+
+    }
+
+    public List<Interest> getAllInterests() {
+        return (List<Interest>) interestRepository.findAll();
+    }
+
+    public Interest addInterestToUser(long userId, long id) {
+        Optional<User> maybeUser = userRepository.findById(userId);
+        Optional<Interest> maybeInterest = interestRepository.findById(id);
+        if(maybeInterest.isEmpty() || maybeUser.isEmpty()) return null;
+
+        User user = maybeUser.get();
+        Interest interest = maybeInterest.get();
+        List<Interest> interests = user.getInterests();
+        interests.add(interest);
+        user.setInterests(interests);
+        return interest;
+    }
+
+    public Location addLocationToUser(long userId, long id) {
+
+        Optional<User> maybeUser = userRepository.findById(userId);
+        Optional<Location> maybeLocation = locationRepository.findById(id);
+        if(maybeLocation.isEmpty() || maybeUser.isEmpty()) return null;
+
+        User user = maybeUser.get();
+        Location location = maybeLocation.get();
+        user.setLocation(location);
+        return location;
     }
 }

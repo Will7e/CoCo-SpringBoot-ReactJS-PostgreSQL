@@ -1,8 +1,7 @@
 package com.example.coco.repository;
 
 import com.example.coco.models.Search;
-import com.example.coco.models.Skill;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SearchRepository extends CrudRepository<Search, Long> {
+public interface SearchRepository extends JpaRepository<Search, Long> {
 }

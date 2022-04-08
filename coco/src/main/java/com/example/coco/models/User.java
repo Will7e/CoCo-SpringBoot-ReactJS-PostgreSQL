@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,14 +29,21 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String occupation;
-    @OneToOne
-    @JoinColumn(name = "location_id")
+    @ManyToOne
     private Location location;
     private String Presentation;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean enabled = false;
     private Boolean locked = false;
+    @ManyToMany
+    private List<Interest> interests;
+    @ManyToMany
+    private List<Skill> skills;
+    @ManyToMany
+    private List<SearchType> openForSearchType;
+    @ManyToMany
+    private List<Search> searches;
 
     public User(String firstName,String lastName, String password, String email, UserRole userRole) {
         this.firstName = firstName;
