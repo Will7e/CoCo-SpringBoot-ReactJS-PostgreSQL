@@ -108,6 +108,10 @@ public class UserService implements UserDetailsService {
 
     // Search methods
 
+    public List<SearchType> openFor(User user) {
+        return user.getOpenForSearchType();
+    }
+
     public void addSearch(Search search) {
         userDAO.addSearch(search);
     }
@@ -130,6 +134,24 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    public User connectViaSearch(User user, long id) {
+        Optional<Search> maybeSearch = userDAO.getSearchById(id);
+        if(maybeSearch.isEmpty()) return null;
+        Optional<User> maybeContact = userDAO.findUserById(maybeSearch.get().getUserId());
+        if(maybeContact.isEmpty()) return null;
+
+        List<User> userContacts = user.getContacts();
+        userContacts.add(maybeContact.get());
+        user.setContacts(userContacts);
+        userDAO.saveUser(user);
+
+        List<User> contactContacts = maybeContact.get().getContacts();
+        contactContacts.add(user);
+        maybeContact.get().setContacts(contactContacts);
+        userDAO.saveUser(maybeContact.get());
+        return maybeContact.get();
+    }
+
     // Skill methods
 
     public List<Skill> getAllSkills() {
@@ -142,6 +164,16 @@ public class UserService implements UserDetailsService {
 
     public List<Skill> getMySkills(User user) {
         return user.getSkills();
+    }
+
+    public Skill addSkillToUser(User user, long id) {
+        Optional<Skill> maybeSkill = userDAO.getSkillById(id);
+        if(maybeSkill.isEmpty()) return null;
+        List<Skill> userSkills = user.getSkills();
+        userSkills.add(maybeSkill.get());
+        user.setSkills(userSkills);
+        userDAO.saveUser(user);
+        return maybeSkill.get();
     }
 
     // Help Methods:
@@ -199,6 +231,7 @@ public class UserService implements UserDetailsService {
     public Location setUsersLocation(long userId, long id) {
         return userDAO.setUsersLocation(userId, id);
     }
+
 
 
 }

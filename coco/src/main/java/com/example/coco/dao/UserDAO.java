@@ -64,6 +64,17 @@ public class UserDAO {
     public Location addLocation(Location location) {
         return locationRepository.save(location);
     }
+    public Location setUsersLocation(long userId, long id) {
+
+        Optional<User> maybeUser = userRepository.findById(userId);
+        Optional<Location> maybeLocation = locationRepository.findById(id);
+        if (maybeLocation.isEmpty() || maybeUser.isEmpty()) return null;
+
+        User user = maybeUser.get();
+        Location location = maybeLocation.get();
+        user.setLocation(location);
+        return location;
+    }
 
     // Search Methods:
 
@@ -73,6 +84,10 @@ public class UserDAO {
 
     public List<Search> getAllSearches() {
         return searchRepository.findAll();
+    }
+
+    public Optional<Search> getSearchById(long id) {
+        return searchRepository.findById(id);
     }
 
     // Skill Methods:
@@ -92,17 +107,9 @@ public class UserDAO {
     }
 
 
-
-
-    public Location setUsersLocation(long userId, long id) {
-
-        Optional<User> maybeUser = userRepository.findById(userId);
-        Optional<Location> maybeLocation = locationRepository.findById(id);
-        if (maybeLocation.isEmpty() || maybeUser.isEmpty()) return null;
-
-        User user = maybeUser.get();
-        Location location = maybeLocation.get();
-        user.setLocation(location);
-        return location;
+    public Optional<Skill> getSkillById(long id) {
+        return skillRepository.findById(id);
     }
+
+
 }

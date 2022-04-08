@@ -9,8 +9,8 @@ import java.util.List;
 public class Search {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer searchId;
-    Integer userId, searchTypeId, locationId;
+    Long searchId;
+    Long userId, searchTypeId, locationId;
     Date birthYear;
     String searchPresentation, occupation;
     @ManyToMany
@@ -21,35 +21,35 @@ public class Search {
     public Search() {
     }
 
-    public Integer getSearchId() {
+    public Long getSearchId() {
         return searchId;
     }
 
-    public void setSearchId(Integer searchId) {
+    public void setSearchId(Long searchId) {
         this.searchId = searchId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getSearchTypeId() {
+    public Long getSearchTypeId() {
         return searchTypeId;
     }
 
-    public void setSearchTypeId(Integer searchTypeId) {
+    public void setSearchTypeId(Long searchTypeId) {
         this.searchTypeId = searchTypeId;
     }
 
-    public Integer getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(Long locationId) {
         this.locationId = locationId;
     }
 

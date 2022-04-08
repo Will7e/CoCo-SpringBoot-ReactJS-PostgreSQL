@@ -24,10 +24,12 @@ public class UserController {
         return userService.currentUserId(user);
     }
 
+
     //Interest Mappings:
 
     /**
      * Returns all the users interests.
+     *
      * @param user User
      * @return List
      */
@@ -39,6 +41,7 @@ public class UserController {
 
     /**
      * Returns all interests in the db
+     *
      * @return List
      */
     @GetMapping("/interests/all")
@@ -48,7 +51,8 @@ public class UserController {
 
     /**
      * Adds interest with given id to current user
-     * @param id long
+     *
+     * @param id   long
      * @param user User
      * @return Interest
      */
@@ -59,6 +63,7 @@ public class UserController {
 
     /**
      * Adds interest to db
+     *
      * @param interest Interest
      * @return Interest
      */
@@ -66,7 +71,6 @@ public class UserController {
     public Interest addInterest(@RequestBody Interest interest) {
         return userService.addInterest(interest);
     }
-
 
     //Location Mappings:
 
@@ -88,6 +92,11 @@ public class UserController {
 
     //Search Mappings:
 
+    @GetMapping("/search/open")
+    public List<SearchType> getOpenFor(@AuthenticationPrincipal User user) {
+        return userService.openFor(user);
+    }
+
     @PostMapping("/search/add")
     public void addSearch(@RequestBody Search search) {
         userService.addSearch(search);
@@ -100,6 +109,7 @@ public class UserController {
 
     /**
      * Returns number of users matching the search
+     *
      * @param search Search
      * @return int
      */
@@ -108,6 +118,10 @@ public class UserController {
         return userService.getMatchingUsers(search).size();
     }
 
+    @PutMapping("search/{id}")
+    public User connectViaSearch(@AuthenticationPrincipal User user, @PathVariable("id") long id) {
+        return userService.connectViaSearch(user, id);
+    }
     //Skill Mappings:
 
 
@@ -129,12 +143,25 @@ public class UserController {
 
     /**
      * Returns all skills of the current user.
+     *
      * @param user User
      * @return List
      */
     @GetMapping("/skills")
     public List<Skill> getMySkillNames(@AuthenticationPrincipal User user) {
         return userService.getMySkills(user);
+    }
+
+    /**
+     * Adds skill with given id to current user
+     *
+     * @param id   long
+     * @param user User
+     * @return Interest
+     */
+    @PutMapping("/skills/{id}")
+    public Skill addSkillToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
+        return userService.addSkillToUser(user, id);
     }
 
 

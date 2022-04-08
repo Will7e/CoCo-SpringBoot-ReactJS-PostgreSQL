@@ -44,6 +44,8 @@ public class User implements UserDetails {
     private List<SearchType> openForSearchType;
     @ManyToMany
     private List<Search> searches;
+    @ManyToMany
+    private List<User> contacts;
 
     public User(String firstName,String lastName, String password, String email, UserRole userRole) {
         this.firstName = firstName;
