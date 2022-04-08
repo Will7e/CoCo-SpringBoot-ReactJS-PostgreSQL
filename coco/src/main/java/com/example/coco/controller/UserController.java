@@ -53,7 +53,7 @@ public class UserController {
         return userService.getAllLocations();
     }
 
-    @PutMapping("/interests/{id}")
+    @PutMapping("/location/{id}")
     public Location addLocationToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
         return userService.addLocationToUser(user.getUserId(), id);
     }
