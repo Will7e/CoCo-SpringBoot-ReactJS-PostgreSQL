@@ -1,4 +1,4 @@
-package com.example.coco.repository;
+/*package com.example.coco.repository;
 
 import com.example.coco.token.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,3 +24,4 @@ public interface ConfirmationTokenRepository
              "WHERE c.token = ?1")
      int updateConfirmedToken(String token, LocalDateTime localDateTime);
 }
+*/

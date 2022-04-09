@@ -1,4 +1,4 @@
-package com.example.coco.dao;
+/*package com.example.coco.dao;
 
 import com.example.coco.models.User;
 import com.example.coco.repository.UserRepository;
@@ -32,4 +32,4 @@ public class UserDAO {
     public List<User> findAllUser(User user){
         return userRepository.findAll();
     }
-}
+}*/

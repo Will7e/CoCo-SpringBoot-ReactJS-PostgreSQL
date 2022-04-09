@@ -1,4 +1,4 @@
-package com.example.coco.dao;
+/*package com.example.coco.dao;
 
 
 import com.example.coco.repository.ConfirmationTokenRepository;
@@ -35,4 +35,4 @@ public class ConfirmationTokenDAO {
         return confirmationTokenRepository.updateConfirmedToken(token,localDateTime);
     }
 
-}
+}*/
