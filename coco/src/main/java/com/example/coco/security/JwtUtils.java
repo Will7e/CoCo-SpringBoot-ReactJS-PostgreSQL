@@ -1,47 +1,32 @@
 package com.example.coco.security;
 
-import java.util.Date;
-import java.util.UUID;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import com.example.coco.models.User;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
+import com.example.coco.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
-@Slf4j
-@Data
 public class JwtUtils {
-    private String jwtSecret = UUID.randomUUID().toString();
-    private int jwtExpirationMs = 60;
-    private String jwtCookie = UUID.randomUUID().toString();
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
+    @Value("${bezkoder.app.jwtSecret}")
+    private String jwtSecret;
 
-    public String getJwtFromCookies(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
-        if (cookie != null) {
-            return cookie.getValue();
-        } else {
-            return null;
-        }
-    }
+    @Value("${bezkoder.app.jwtExpirationMs}")
+    private int jwtExpirationMs;
 
-    public ResponseCookie generateJwtCookie(@AuthenticationPrincipal User userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getFullName());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
-        return cookie;
-    }
+    public String generateJwtToken(Authentication authentication) {
 
-    public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
-        return cookie;
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
+        return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -53,26 +38,17 @@ public class JwtUtils {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
-            log.error("Invalid JWT signature: {}", e.getMessage());
+            logger.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
+            logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
+            logger.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
+            logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
 
         return false;
-    }
-
-    public String generateTokenFromUsername(String fullname) {
-        return Jwts.builder()
-                .setSubject(fullname)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
     }
 }
