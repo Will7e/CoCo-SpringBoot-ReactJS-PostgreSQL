@@ -4,7 +4,7 @@ import com.example.coco.dao.UserDAO;
 import com.example.coco.models.*;
 import com.example.coco.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,12 +30,20 @@ public class UserService implements UserDetailsService {
 
         return PrincipalUser.build(user);
     }
-    public int enableUser(String email) {
-        return userDAO.enableUser(email);
-    }
 
     public Optional<User> getUserFirstName(User user) {
-        return userDAO.findUserById(user.getUserId());
+        return userDAO.findUserById(user.getId());
+    }
+
+    public User getCurrentUser(){
+
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userDAO.findUserById(principalUser.getId());
+        if (user.isEmpty()){
+            return null;
+        }
+        return user.get();
+
     }
 
 

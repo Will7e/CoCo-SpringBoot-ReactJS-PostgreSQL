@@ -25,14 +25,6 @@ public class UserDAO {
         return userRepository.findById(id);
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
-    }
-
-    public int enableUser(String email) {
-        return userRepository.enableAppUser(email);
-    }
-
     // Interest Methods:
 
     public Interest addInterest(Interest interest) {

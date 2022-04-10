@@ -9,11 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+@Data
 @Entity
 @Table(	name = "users",
         uniqueConstraints = {
@@ -43,6 +41,21 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    private String occupation;
+    @ManyToOne
+    private Location location;
+    private String Presentation;
+    @ManyToMany
+    private List<Interest> interests;
+    @ManyToMany
+    private List<Skill> skills;
+    @ManyToMany
+    private List<SearchType> openForSearchType;
+    @ManyToMany
+    private List<Search> searches;
+    @ManyToMany
+    private List<User> contacts;
 
     public User() {
     }

@@ -1,4 +1,4 @@
-package com.example.coco.service;
+/* package com.example.coco.service;
 
 import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
@@ -261,4 +261,4 @@ class UserServiceTest extends MockitoExtension {
     @Test
     void setUsersLocation() {
     }
-}
+}*/

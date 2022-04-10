@@ -1,6 +1,7 @@
 package com.example.coco.controller;
 
 import com.example.coco.models.*;
+import com.example.coco.service.PrincipalUser;
 import com.example.coco.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,11 +20,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping()
-    public long userLoggedId(User user) {
-        return userService.currentUserId(user);
+    @GetMapping
+    public User getCurrentUser(){
+       return userService.getCurrentUser();
     }
-
 
     //Interest Mappings:
 
@@ -58,7 +58,7 @@ public class UserController {
      */
     @PutMapping("/interests/{id}")
     public Interest addInterestToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.addInterestToUser(user.getUserId(), id);
+        return userService.addInterestToUser(user.getId(), id);
     }
 
     /**
@@ -81,7 +81,7 @@ public class UserController {
 
     @PutMapping("/location/{id}")
     public Location setUsersLocation(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.setUsersLocation(user.getUserId(), id);
+        return userService.setUsersLocation(user.getId(), id);
     }
 
     @PostMapping("/location/add")
