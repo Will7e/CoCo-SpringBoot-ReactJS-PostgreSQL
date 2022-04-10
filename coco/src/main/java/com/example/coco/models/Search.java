@@ -11,12 +11,11 @@ public class Search {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long searchId;
     Long userId, searchTypeId, locationId;
-    Date birthYear;
     String searchPresentation, occupation;
     @ManyToMany
     List<Interest> searchInterests;
     @ManyToMany
-    List<Skill> searchSkils;
+    List<Skill> searchSkills;
 
     public Search() {
     }
@@ -53,14 +52,6 @@ public class Search {
         this.locationId = locationId;
     }
 
-    public Date getBirthYear() {
-        return birthYear;
-    }
-
-    public void setBirthYear(Date birthYear) {
-        this.birthYear = birthYear;
-    }
-
     public String getSearchPresentation() {
         return searchPresentation;
     }
@@ -85,11 +76,11 @@ public class Search {
         this.searchInterests = searchInterests;
     }
 
-    public List<Skill> getSearchSkils() {
-        return searchSkils;
+    public List<Skill> getSearchSkills() {
+        return searchSkills;
     }
 
-    public void setSearchSkils(List<Skill> searchSkils) {
-        this.searchSkils = searchSkils;
+    public void setSearchSkills(List<Skill> searchSkils) {
+        this.searchSkills = searchSkils;
     }
 }

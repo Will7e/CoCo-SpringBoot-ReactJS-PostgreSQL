@@ -112,8 +112,8 @@ public class UserService implements UserDetailsService {
         return user.getOpenForSearchType();
     }
 
-    public void addSearch(Search search) {
-        userDAO.addSearch(search);
+    public Search addSearch(Search search) {
+        return userDAO.addSearch(search);
     }
 
     /**
@@ -189,16 +189,22 @@ public class UserService implements UserDetailsService {
     private boolean matchUserToSearch(User user, Search search) {
         // check if user is open to contact of SearchType
         List<SearchType> isOpenTo = user.getOpenForSearchType().stream()
-                .filter(o -> o.getId().equals(search.getSearchTypeId()))
+                .filter(o -> o.getId() == search.getSearchTypeId())
                 .toList();
 
-        if (isOpenTo.size() == 0) return false;
+        if (isOpenTo.size() == 0) {
+            System.out.println("User is not open to searches of this type.");
+            return false;
+        }
 
         // check location
-        if (!(search.getLocationId() == null || search.getLocationId().equals(user.getLocation().getId()))) return false;
+        if (!(search.getLocationId() == null || search.getLocationId().equals(user.getLocation().getId()))) {
+            System.out.println("User location is not right for this search.");
+            return false;
+        }
 
         // check if user have all the skills in the search
-        List<Skill> searchedSkills = search.getSearchSkils();
+        List<Skill> searchedSkills = search.getSearchSkills();
         List<Skill> userSkills = user.getSkills();
         for (Skill searchedSkill : searchedSkills) {
             boolean foundSkill = false;
@@ -208,8 +214,13 @@ public class UserService implements UserDetailsService {
                     break;
                 }
             }
-            if (!foundSkill) return false; //if we find one unmatched skill - no match!
+            if (!foundSkill) {
+                System.out.println("User does not have the required skills for this search.");
+                return false; //if we find one unmatched skill - no match!}
+            }
+
         }
+
         // check if user have all interests in the search
         List<Interest> searchedInterests = search.getSearchInterests();
         List<Interest> userInterests = user.getInterests();
@@ -221,7 +232,11 @@ public class UserService implements UserDetailsService {
                     break;
                 }
             }
-            if (!foundInterest) return false; //if we find one unmatched skill - no match!
+
+            if (!foundInterest) {
+                System.out.println("User does not have the required interests for this search.");
+                return false; //if we find one unmatched interest - no match!
+                 }
         }
         //if we got this far without returning false, consider it a match!
         return true;

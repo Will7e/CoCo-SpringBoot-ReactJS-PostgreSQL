@@ -98,8 +98,8 @@ public class UserController {
     }
 
     @PostMapping("/search/add")
-    public void addSearch(@RequestBody Search search) {
-        userService.addSearch(search);
+    public Search addSearch(@RequestBody Search search) {
+        return userService.addSearch(search);
     }
 
     @GetMapping("/search")

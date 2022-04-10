@@ -78,8 +78,8 @@ public class UserDAO {
 
     // Search Methods:
 
-    public void addSearch(Search search) {
-        searchRepository.save(search);
+    public Search addSearch(Search search) {
+        return searchRepository.save(search);
     }
 
     public List<Search> getAllSearches() {
