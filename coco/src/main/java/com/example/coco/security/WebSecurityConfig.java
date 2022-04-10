@@ -1,6 +1,6 @@
 package com.example.coco.security;
 
-import com.example.coco.service.UserDetailsServiceImpl;
+import com.example.coco.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    UserService userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;

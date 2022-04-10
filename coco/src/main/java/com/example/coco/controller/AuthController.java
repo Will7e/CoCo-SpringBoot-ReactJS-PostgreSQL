@@ -11,7 +11,7 @@ import com.example.coco.repository.UserRepository;
 import com.example.coco.response.JwtResponse;
 import com.example.coco.response.MessageResponse;
 import com.example.coco.security.JwtUtils;
-import com.example.coco.service.UserDetailsImpl;
+import com.example.coco.service.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +55,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        PrincipalUser userDetails = (PrincipalUser) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
