@@ -1,10 +1,6 @@
 package com.example.coco.dto;
 
 
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {

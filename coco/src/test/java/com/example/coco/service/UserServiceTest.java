@@ -1,28 +1,27 @@
-/* package com.example.coco.service;
+package com.example.coco.service;
 
-import com.example.coco.dao.ConfirmationTokenDAO;
 import com.example.coco.dao.UserDAO;
 import com.example.coco.models.*;
-import com.example.coco.security.PasswordEncoder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 class UserServiceTest extends MockitoExtension {
 
     static UserService unitUnderTest;
     static UserDAO userDAO;
-    static PasswordEncoder passwordEncoder;
-    static ConfirmationTokenDAO confirmationTokenDAO;
     static Interest testInterest;
     static List<Interest> testInterests;
-    static Skill testSkill;
+    static Skill testSkill1, testSkill2;
     static List<Skill> testSkills;
     static User testUser1, testUser2;
     static List<User> testUsers;
@@ -36,10 +35,8 @@ class UserServiceTest extends MockitoExtension {
     @BeforeAll
     public static void init() {
         userDAO = Mockito.mock(UserDAO.class);
-        passwordEncoder = Mockito.mock(PasswordEncoder.class);
-        confirmationTokenDAO = Mockito.mock(ConfirmationTokenDAO.class);
 
-        unitUnderTest = new UserService(userDAO, passwordEncoder, confirmationTokenDAO);
+        unitUnderTest = new UserService(userDAO);
 
         testInterest = new Interest();
         testInterest.setId(1);
@@ -48,12 +45,16 @@ class UserServiceTest extends MockitoExtension {
         testInterests = new ArrayList<>();
         testInterests.add(testInterest);
 
-        testSkill = new Skill();
-        testSkill.setId(1);
-        testSkill.setName("Testing");
-        testSkill.setDescription("I am good at testing.");
+        testSkill1 = new Skill();
+        testSkill1.setId(1);
+        testSkill1.setName("Testing");
+        testSkill1.setDescription("I am good at testing.");
+        testSkill2 = new Skill();
+        testSkill2.setId(2);
+        testSkill2.setName("Debugging");
+        testSkill2.setDescription("I am good at debugging.");
         testSkills = new ArrayList<>();
-        testSkills.add(testSkill);
+        testSkills.add(testSkill1);
 
         testLocation = new Location();
         testLocation.setId(1);
@@ -69,7 +70,7 @@ class UserServiceTest extends MockitoExtension {
         testSearchTypes.add(testSearchType);
 
         testUser1 = new User();
-        testUser1.setUserId(1);
+        testUser1.setId((long) 1);
         testUser1.setSkills(testSkills);
         testUser1.setInterests(testInterests);
         testUser1.setLocation(testLocation);
@@ -78,7 +79,7 @@ class UserServiceTest extends MockitoExtension {
         testUsers.add(testUser1);
 
         testUser2 = new User();
-        testUser2.setUserId(1);
+        testUser2.setId((long) 1);
         testUser2.setSkills(testSkills);
         testUser2.setInterests(testInterests);
         testUser2.setLocation(testLocation);
@@ -235,30 +236,84 @@ class UserServiceTest extends MockitoExtension {
         System.out.println(actualUsers);
 
         //verify
-        assertEquals(1, actualUsers.get(0).getUserId());
+        assertEquals(1, actualUsers.get(0).getId());
     }
 
     @Test
     void connectViaSearch() {
+
+        //setup
+        Mockito.when(userDAO.getSearchById(1)).thenReturn(Optional.ofNullable(testSearch));
+        Mockito.when(userDAO.findUserById(any())).thenReturn(Optional.ofNullable(testUser1));
+
+        //test
+        User actualUser = unitUnderTest.connectViaSearch(testUser2, 1);
+        System.out.println(actualUser);
+        //verify
+        assertEquals(1, actualUser.getId());
+        Mockito.verify(userDAO, Mockito.times(2)).saveUser(any());
+
     }
 
     @Test
     void getAllSkills() {
+        //setup
+        Mockito.when(userDAO.getAllSkills()).thenReturn(testSkills);
+
+        //test
+        List<Skill> actualSkills = unitUnderTest.getAllSkills();
+        System.out.println(actualSkills);
+
+        //verify
+        assertEquals(1, actualSkills.get(0).getId());
     }
 
     @Test
     void addSkill() {
+        //setup
+        Mockito.when(userDAO.addSkill(testSkill1)).thenReturn(testSkill1);
+
+        //test
+        Skill actualSkill = unitUnderTest.addSkill(testSkill1);
+
+        //verify
+        assertEquals(1, actualSkill.getId());
     }
 
     @Test
     void getMySkills() {
+        //setup
+
+        //test
+        List<Skill> actualSkills = unitUnderTest.getMySkills(testUser1);
+
+        //verify
+        assertEquals(1, actualSkills.get(0).getId());
     }
+
 
     @Test
     void addSkillToUser() {
+        //setup
+        Mockito.when(userDAO.getSkillById(2)).thenReturn(Optional.ofNullable(testSkill2));
+        //kolla med Lena att mocka saveuser.
+
+        //test
+        Skill actualSkill = unitUnderTest.addSkill(testSkill1);
+
+        //verify
+        assertEquals(1, actualSkill.getId());
+
     }
 
     @Test
     void setUsersLocation() {
+        //setup
+        Mockito.when(userDAO.setUsersLocation(1, 1)).thenReturn(testLocation);
+        //test
+        Location actualLocation = unitUnderTest.setUsersLocation(1, 1);
+
+        //verify
+        assertEquals(1, actualLocation.getId());
     }
-}*/
+}

@@ -1,17 +1,11 @@
 package com.example.coco.models;
 
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
 
-@Data
 @Entity
 @Table(	name = "users",
         uniqueConstraints = {
@@ -55,7 +49,7 @@ public class User {
     @ManyToMany
     private List<Search> searches;
     @ManyToMany
-    private List<User> contacts;
+    private List<User> contacts = new ArrayList<>();
 
     public User() {
     }
@@ -104,5 +98,70 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public String getPresentation() {
+        return Presentation;
+    }
+
+    public void setPresentation(String presentation) {
+        Presentation = presentation;
+    }
+
+    public List<Interest> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<Interest> interests) {
+        this.interests = interests;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public List<SearchType> getOpenForSearchType() {
+        return openForSearchType;
+    }
+
+    public void setOpenForSearchType(List<SearchType> openForSearchType) {
+        this.openForSearchType = openForSearchType;
+    }
+
+    public List<Search> getSearches() {
+        return searches;
+    }
+
+    public void setSearches(List<Search> searches) {
+        this.searches = searches;
+    }
+
+    public List<User> getContacts() {
+
+        return contacts;
+    }
+
+    public void setContacts(List<User> contacts) {
+        this.contacts = contacts;
     }
 }
