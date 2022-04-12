@@ -69,7 +69,7 @@ class UserServiceTest extends MockitoExtension {
         testSearchTypes = new ArrayList<>();
         testSearchTypes.add(testSearchType);
 
-        testUser1 = new User();
+        testUser1 = new User("Tester1", "test1@test.test", "password");
         testUser1.setId((long) 1);
         testUser1.setSkills(testSkills);
         testUser1.setInterests(testInterests);
@@ -78,7 +78,7 @@ class UserServiceTest extends MockitoExtension {
         testUsers = new ArrayList<>();
         testUsers.add(testUser1);
 
-        testUser2 = new User();
+        testUser2 = new User("Tester2", "test2@test.test", "password");
         testUser2.setId((long) 1);
         testUser2.setSkills(testSkills);
         testUser2.setInterests(testInterests);
