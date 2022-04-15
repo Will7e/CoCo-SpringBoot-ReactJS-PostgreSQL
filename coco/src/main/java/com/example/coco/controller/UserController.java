@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping
     public User getCurrentUser(){
-       return userService.getCurrentUser();
+        return userService.getCurrentUser();
     }
 
     //Interest Mappings:
@@ -163,6 +163,9 @@ public class UserController {
     public Skill addSkillToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
         return userService.addSkillToUser(user, id);
     }
+
+
+
 
 
 }
