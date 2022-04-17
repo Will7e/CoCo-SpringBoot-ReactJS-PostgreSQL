@@ -16,6 +16,8 @@ public class PrincipalUser implements UserDetails {
 
     private Long id;
 
+    private String fullName;
+
     private String username;
 
     private String email;
@@ -25,9 +27,10 @@ public class PrincipalUser implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public PrincipalUser(Long id, String username, String email, String password,
+    public PrincipalUser(Long id, String fullName, String username, String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
+        this.fullName = fullName;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -41,6 +44,7 @@ public class PrincipalUser implements UserDetails {
 
         return new PrincipalUser(
                 user.getId(),
+                user.getFullName(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
@@ -59,6 +63,8 @@ public class PrincipalUser implements UserDetails {
     public String getEmail() {
         return email;
     }
+
+    public String getFullName(){return fullName;}
 
     @Override
     public String getPassword() {

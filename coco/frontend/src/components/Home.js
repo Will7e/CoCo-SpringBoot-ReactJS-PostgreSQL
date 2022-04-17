@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Button } from "react-bootstrap";
+import HomeImage from "../images/home.jpg";
 
-import UserService from "../services/user.service";
+import "./Home.css";
+import TypeText from "./TypeText";
 
 const Home = () => {
-  const [content, setContent] = useState("");
-
-  useEffect(() => {
-    UserService.getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
-      }
-    );
-  }, []);
-
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>Home Page</h3>
-      </header>
+    <div className="home">
+      <img className="home-image" src={HomeImage}></img>
+      <div class="centered">
+        <h1>
+          <TypeText typing={1} text={"Coder Connect"} />{" "}
+        </h1>
+        <div class="center2">
+          <h3>
+            <TypeText typing={2} text={"Welcome to our community"} />{" "}
+          </h3>
+        </div>
+      </div>
     </div>
   );
 };

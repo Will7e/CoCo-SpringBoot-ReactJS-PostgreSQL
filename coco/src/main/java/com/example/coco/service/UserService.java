@@ -2,6 +2,7 @@ package com.example.coco.service;
 
 import com.example.coco.dao.UserDAO;
 import com.example.coco.models.*;
+import com.example.coco.repository.SkillRepository;
 import com.example.coco.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,12 +57,12 @@ public class UserService implements UserDetailsService {
     public List<Interest> getAllInterests() {
         return userDAO.getAllInterests();
     }
-
+/*
     public Interest addInterestToUser(long userId, long id) {
         return userDAO.addInterestToUser(userId, id);
     }
-
-    public List<Interest> getInterestByUser(User user) {
+*/
+    public String getInterestByUser(User user) {
         return user.getInterests();
     }
 
@@ -84,13 +85,14 @@ public class UserService implements UserDetailsService {
     public Search addSearch(Search search) {
         return userDAO.addSearch(search);
     }
-
+/*
     /**
      * returns list of searches in the db that user is a match to.
      *
      * @param user User
      * @return List of searches
      */
+    /*
     public List<Search> getMatchingSearches(User user) {
         return userDAO.getAllSearches().stream()
                 .filter(s -> matchUserToSearch(user, s))
@@ -102,7 +104,7 @@ public class UserService implements UserDetailsService {
                 .filter(u -> matchUserToSearch(u, search))
                 .collect(Collectors.toList());
     }
-
+/*
     public User connectViaSearch(User user, long id) {
         Optional<Search> maybeSearch = userDAO.getSearchById(id);
         if(maybeSearch.isEmpty()) return null;
@@ -120,7 +122,7 @@ public class UserService implements UserDetailsService {
         userDAO.saveUser(maybeContact.get());
         return maybeContact.get();
     }
-
+*/
     // Skill methods
 
     public List<Skill> getAllSkills() {
@@ -135,19 +137,47 @@ public class UserService implements UserDetailsService {
         return user.getSkills();
     }
 
-    public Skill addSkillToUser(User user, long id) {
-        Optional<Skill> maybeSkill = userDAO.getSkillById(id);
-        if(maybeSkill.isEmpty()) return null;
+
+
+    public Skill addSkillsToUSer(Integer skillId, long userId) {
+        Skill skill = userDAO.getSkillById(skillId);
+        if (skill == null){
+            return null;
+        }
+        User user = userDAO.findCurrentUserById(userId);
+        if (user == null){
+           return null;
+        }
         List<Skill> userSkills = user.getSkills();
-        userSkills.add(maybeSkill.get());
+        userSkills.add(skill);
         user.setSkills(userSkills);
         userDAO.saveUser(user);
-        return maybeSkill.get();
+
+        return skill;
     }
+
+    public Skill removeUserSkill(Integer skillId, long userId) {
+        Skill skill = userDAO.getSkillById(skillId);
+        if (skill == null){
+            return null;
+        }
+        User user = userDAO.findCurrentUserById(userId);
+        if (user == null){
+            return null;
+        }
+        List<Skill> userSkills = user.getSkills();
+        userSkills.remove(skill);
+        user.setSkills(userSkills);
+        userDAO.saveUser(user);
+
+        return skill;
+
+    }
+
 
     // Help Methods:
 
-
+/*
     /**
      * returns true if user is a match to search
      *
@@ -155,6 +185,8 @@ public class UserService implements UserDetailsService {
      * @param search Search
      * @return boolean match
      */
+
+    /*
     private boolean matchUserToSearch(User user, Search search) {
         // check if user is open to contact of SearchType
         List<SearchType> isOpenTo = user.getOpenForSearchType().stream()
@@ -211,10 +243,13 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-
+*/
+    /*
     public Location setUsersLocation(long userId, long id) {
         return userDAO.setUsersLocation(userId, id);
     }
+*/
+
 
 
 }

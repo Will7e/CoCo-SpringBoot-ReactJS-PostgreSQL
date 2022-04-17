@@ -50,8 +50,8 @@ function Navbar() {
           </li>
 
           {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
+            <li className="nav-page nav-item">
+              <Link to={"/user"} className=" nav-link">
                 Home
               </Link>
             </li>
@@ -60,12 +60,12 @@ function Navbar() {
 
         {currentUser ? (
           <div className="navbar-nav ml-auto">
-            <li className="nav-item">
+            <li className="nav__button nav-item">
               <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
+                My Profile
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav__button nav-item">
               <a href="/login" className="nav-link" onClick={logOut}>
                 Sign out
               </a>

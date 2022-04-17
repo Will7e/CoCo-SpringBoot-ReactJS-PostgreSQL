@@ -4,7 +4,7 @@ label {
 }
 
 .card {
-  background-color: #000000;
+  background-color: #ffffff;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
   margin-top: 50px;
@@ -43,4 +43,9 @@ label {
 }
 .company_name {
   font-weight: 800;
+}
+.nav-page {
+  margin-left: 3rem;
+  background-color: #232323;
+  border-radius: 5px;
 }

@@ -1,0 +1,13 @@
+.profile-container {
+  background-color: white !important;
+}
+.btn-fill {
+  align-content: flex-end;
+  margin-top: 10px;
+}
+.btn-green {
+  background-color: rgb(12, 188, 159) !important;
+}
+.btn-blue {
+  background-color: rgb(0, 102, 255);
+}

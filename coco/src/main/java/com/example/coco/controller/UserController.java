@@ -4,6 +4,7 @@ import com.example.coco.models.*;
 import com.example.coco.service.PrincipalUser;
 import com.example.coco.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(){
         return userService.getCurrentUser();
     }
@@ -34,7 +36,7 @@ public class UserController {
      * @return List
      */
     @GetMapping("/interests")
-    public List<Interest> getInterestsByUser(@AuthenticationPrincipal User user) {
+    public String getInterestsByUser(@AuthenticationPrincipal User user) {
         if (user == null) return null;
         return userService.getInterestByUser(user);
     }
@@ -48,7 +50,7 @@ public class UserController {
     public List<Interest> getAllInterests() {
         return userService.getAllInterests();
     }
-
+/*
     /**
      * Adds interest with given id to current user
      *
@@ -56,11 +58,12 @@ public class UserController {
      * @param user User
      * @return Interest
      */
+    /*
     @PutMapping("/interests/{id}")
     public Interest addInterestToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
         return userService.addInterestToUser(user.getId(), id);
     }
-
+*/
     /**
      * Adds interest to db
      *
@@ -78,12 +81,12 @@ public class UserController {
     public List<Location> getAllLocations() {
         return userService.getAllLocations();
     }
-
+/*
     @PutMapping("/location/{id}")
     public Location setUsersLocation(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
         return userService.setUsersLocation(user.getId(), id);
     }
-
+*/
     @PostMapping("/location/add")
     public Location addLocation(@RequestBody Location location) {
         return userService.addLocation(location);
@@ -102,6 +105,7 @@ public class UserController {
         return userService.addSearch(search);
     }
 
+    /*
     @GetMapping("/search")
     public List<Search> getMatchingSearches(@AuthenticationPrincipal User user) {
         return userService.getMatchingSearches(user);
@@ -113,6 +117,7 @@ public class UserController {
      * @param search Search
      * @return int
      */
+  /*
     @PostMapping("/search/matches")
     public int searchNoOfMatches(@RequestBody Search search) {
         return userService.getMatchingUsers(search).size();
@@ -124,7 +129,7 @@ public class UserController {
     }
     //Skill Mappings:
 
-
+*/
     /**
      * Returns all skills listed in the db
      */
@@ -152,17 +157,23 @@ public class UserController {
         return userService.getMySkills(user);
     }
 
-    /**
-     * Adds skill with given id to current user
-     *
-     * @param id   long
-     * @param user User
-     * @return Interest
-     */
-    @PutMapping("/skills/{id}")
-    public Skill addSkillToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.addSkillToUser(user, id);
+
+
+
+    // Add skill to user (Works on postman)
+    @PutMapping("/skills/{skillId}/{userId}")
+    public Skill addSkillsToUser(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
+        return userService.addSkillsToUSer(skillId,userId);
     }
+
+    // Remove skill from user (Works on postman)
+    @DeleteMapping("/skills/remove/{skillId}/{userId}")
+    public Skill removeUserSkill(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
+        return userService.removeUserSkill(skillId,userId);
+    }
+
+
+
 
 
 

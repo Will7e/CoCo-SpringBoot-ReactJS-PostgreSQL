@@ -58,6 +58,7 @@ public class AuthService {
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
+                userDetails.getFullName(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
@@ -94,6 +95,7 @@ public class AuthService {
                 roles.add(userRole);
             });
         }
+
         user.setRoles(roles);
         userRepository.save(user);
 

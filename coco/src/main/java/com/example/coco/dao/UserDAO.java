@@ -25,6 +25,10 @@ public class UserDAO {
         return userRepository.findById(id);
     }
 
+    public User findCurrentUserById(long id){
+        return userRepository.findUserById(id);
+    }
+
     // Interest Methods:
 
     public Interest addInterest(Interest interest) {
@@ -34,7 +38,7 @@ public class UserDAO {
     public List<Interest> getAllInterests() {
         return interestRepository.findAll();
     }
-
+/*
     public Interest addInterestToUser(long userId, long id) {
         Optional<User> maybeUser = userRepository.findById(userId);
         Optional<Interest> maybeInterest = interestRepository.findById(id);
@@ -47,7 +51,7 @@ public class UserDAO {
         user.setInterests(interests);
         return interest;
     }
-
+*/
     // Location Methods:
 
     public List<Location> getAllLocations() {
@@ -56,6 +60,7 @@ public class UserDAO {
     public Location addLocation(Location location) {
         return locationRepository.save(location);
     }
+    /*
     public Location setUsersLocation(long userId, long id) {
 
         Optional<User> maybeUser = userRepository.findById(userId);
@@ -67,7 +72,7 @@ public class UserDAO {
         user.setLocation(location);
         return location;
     }
-
+*/
     // Search Methods:
 
     public Search addSearch(Search search) {
@@ -99,8 +104,8 @@ public class UserDAO {
     }
 
 
-    public Optional<Skill> getSkillById(long id) {
-        return skillRepository.findById(id);
+    public Skill getSkillById(Integer id) {
+        return skillRepository.findSkillById(id);
     }
 
 

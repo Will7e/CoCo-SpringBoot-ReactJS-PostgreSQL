@@ -13,10 +13,8 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String description;
 
-    public Skill() {
-    }
+
 
     public Integer getId() {
         return id;
@@ -34,11 +32,4 @@ public class Skill {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

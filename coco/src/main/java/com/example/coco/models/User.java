@@ -1,9 +1,7 @@
 package com.example.coco.models;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -47,19 +45,18 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     private String occupation;
-    @ManyToOne
-    private Location location;
     private String Presentation;
-    @ManyToMany
-    private List<Interest> interests;
+    private String interests;
+    private String city;
+    private String contacts;
+
     @ManyToMany
     private List<Skill> skills;
     @ManyToMany
     private List<SearchType> openForSearchType;
     @ManyToMany
     private List<Search> searches;
-    @ManyToMany
-    private List<User> contacts;
+
 
     public User() {
     }
@@ -69,6 +66,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.skills = new ArrayList<>();
     }
 
 }
