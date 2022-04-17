@@ -1,5 +1,6 @@
 package com.example.coco.controller;
 
+import com.example.coco.dto.AddSkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.service.PrincipalUser;
 import com.example.coco.service.UserService;
@@ -161,13 +162,15 @@ public class UserController {
 
 
     // Add skill to user (Works on postman)
-    @PutMapping("/skills/{skillId}/{userId}")
-    public Skill addSkillsToUser(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
-        return userService.addSkillsToUSer(skillId,userId);
+    @PutMapping("/skills/add")
+    @PreAuthorize("hasRole('USER')")
+    public Skill addSkillsToUser(@RequestBody AddSkillRequest addSkillRequest){
+        return userService.addSkillsToUSer(addSkillRequest.getSkillId(),addSkillRequest.getUserId());
     }
 
     // Remove skill from user (Works on postman)
     @DeleteMapping("/skills/remove/{skillId}/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public Skill removeUserSkill(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
         return userService.removeUserSkill(skillId,userId);
     }

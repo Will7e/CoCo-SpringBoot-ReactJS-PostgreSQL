@@ -38,7 +38,7 @@ const Profile = () => {
         }
       }
     );
-  }, []);
+  }, [content]);
 
   const [toggle, setToggled] = useState(false);
 
@@ -95,7 +95,12 @@ const Profile = () => {
                     <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Skills</label>{" "}
-                        <Button onClick={toggler} className={buttonColor}>
+                        <Button
+                          onClick={() => {
+                            UserService.putUserSkills(1, content.id);
+                          }}
+                          className={buttonColor}
+                        >
                           Java {toggle ? <span>-</span> : <span>+</span>}
                         </Button>{" "}
                         <Button>JavaScript</Button> <Button>Python</Button>{" "}
