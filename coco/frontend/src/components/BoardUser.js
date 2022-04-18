@@ -3,10 +3,10 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 
 const BoardUser = () => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState([]);
 
   useEffect(() => {
-    UserService.getUserBoard().then(
+    UserService.getUsersBySkill().then(
       (response) => {
         setContent(response.data);
       },
@@ -30,7 +30,16 @@ const BoardUser = () => {
   return (
     <div className="container">
       <header className="jumbotron">
-        <h3>{content}</h3>
+        {content.map((n, i) => {
+          return (
+            <h3 key={i}>
+              <span>{n.fullName}</span>
+              <span>{n.email}</span>
+              <span>{n.contacts}</span>
+              <span>{n.city}</span>
+            </h3>
+          );
+        })}
       </header>
     </div>
   );

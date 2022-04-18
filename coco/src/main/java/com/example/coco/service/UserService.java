@@ -1,6 +1,7 @@
 package com.example.coco.service;
 
 import com.example.coco.dao.UserDAO;
+import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.repository.SkillRepository;
 import com.example.coco.repository.UserRepository;
@@ -12,7 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -139,12 +143,12 @@ public class UserService implements UserDetailsService {
 
 
 
-    public Skill addSkillsToUSer(Integer skillId, long userId) {
-        Skill skill = userDAO.getSkillById(skillId);
+    public Skill addSkillsToUSer(SkillRequest skillRequest) {
+        Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
         if (skill == null){
             return null;
         }
-        User user = userDAO.findCurrentUserById(userId);
+        User user = userDAO.findCurrentUserById(skillRequest.getUserId());
         if (user == null){
            return null;
         }
@@ -173,6 +177,24 @@ public class UserService implements UserDetailsService {
         return skill;
 
     }
+
+    public List<User> findAllUserBySkills(Integer skillId) {
+
+        List<User> userList = userDAO.getAllUsers();
+        List<User> userList1 = new ArrayList<>();
+
+        for (User user: userList){
+            for (Skill skill : user.getSkills()){
+                if (skillId == skill.getId()){
+                    userList1.add(user);
+                    break;
+                }
+            }
+        }
+        return userList1;
+    }
+
+
 
 
     // Help Methods:

@@ -17,6 +17,7 @@ import "./Profile.css";
 const Profile = () => {
   const [content, setContent] = useState("");
   const contentSkills = content.skills;
+  let skillJava = 1;
 
   useEffect(() => {
     UserService.getUserInfo().then(
@@ -38,7 +39,7 @@ const Profile = () => {
         }
       }
     );
-  }, [content]);
+  }, []);
 
   const [toggle, setToggled] = useState(false);
 
@@ -97,7 +98,7 @@ const Profile = () => {
                         <label>Skills</label>{" "}
                         <Button
                           onClick={() => {
-                            UserService.putUserSkills(1, content.id);
+                            UserService.putUserSkill(skillJava, content.id);
                           }}
                           className={buttonColor}
                         >

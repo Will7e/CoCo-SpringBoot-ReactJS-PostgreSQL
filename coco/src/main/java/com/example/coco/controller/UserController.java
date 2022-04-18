@@ -1,10 +1,10 @@
 package com.example.coco.controller;
 
-import com.example.coco.dto.AddSkillRequest;
+import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
-import com.example.coco.service.PrincipalUser;
 import com.example.coco.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
-@AllArgsConstructor
-public class UserController {
 
-    private final UserService userService;
+public class UserController {
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
@@ -142,10 +143,7 @@ public class UserController {
     /**
      * Adds skill to db.
      */
-    @PostMapping("/skills/add")
-    public Skill addSkill(@RequestBody Skill skill) {
-        return userService.addSkill(skill);
-    }
+
 
     /**
      * Returns all skills of the current user.
@@ -164,8 +162,8 @@ public class UserController {
     // Add skill to user (Works on postman)
     @PutMapping("/skills/add")
     @PreAuthorize("hasRole('USER')")
-    public Skill addSkillsToUser(@RequestBody AddSkillRequest addSkillRequest){
-        return userService.addSkillsToUSer(addSkillRequest.getSkillId(),addSkillRequest.getUserId());
+    public Skill addSkillsToUser(@Valid @RequestBody SkillRequest skillRequest){
+        return userService.addSkillsToUSer(skillRequest);
     }
 
     // Remove skill from user (Works on postman)
@@ -174,6 +172,17 @@ public class UserController {
     public Skill removeUserSkill(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
         return userService.removeUserSkill(skillId,userId);
     }
+
+    // Find all user with by skill id ("Works on postman")
+    // Works on web
+    @GetMapping("/skills/user/{skillId}")
+    public List<User> findAllUserBySkills(@PathVariable ("skillId") Integer skillId){
+        return userService.findAllUserBySkills(skillId);
+
+    }
+
+
+
 
 
 
