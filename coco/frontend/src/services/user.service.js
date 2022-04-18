@@ -34,8 +34,18 @@ const getUsersBySkillCS = () => {
 const getUsersBySkillSQL = () => {
   return axios.get("http://localhost:8080/api/user/skills/user/6");
 };
-const editFullName = (data) => {
-  return axios.put("http://localhost:8080/api/user/fullname/edit", data, {
+const editUser = (data) => {
+  return axios.put("http://localhost:8080/api/user/edit/user", data, {
+    headers: authHeader(),
+  });
+};
+const deleteUSer = (data) => {
+  return axios.delete("http://localhost:8080/api/user/skills/remove", data, {
+    headers: authHeader(),
+  });
+};
+const addSkill = (data) => {
+  return axios.delete("http://localhost:8080/api/user/skills/add", data, {
     headers: authHeader(),
   });
 };
@@ -51,7 +61,9 @@ const UserService = {
   getUsersBySkillHtlmCss,
   getUsersBySkillCS,
   getUsersBySkillSQL,
-  editFullName,
+  editUser,
+  deleteUSer,
+  addSkill,
 };
 
 export default UserService;

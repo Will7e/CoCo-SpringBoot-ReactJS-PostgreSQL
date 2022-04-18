@@ -65,13 +65,13 @@ public class UserController {
         return userService.addInterestToUser(user.getId(), id);
     }
 */
-    /**
+   /* /**
      * Adds interest to db
      *
      * @param interest Interest
      * @return Interest
      */
-    @PostMapping("/interests/add")
+    /*@PostMapping("/interests/add")
     public Interest addInterest(@RequestBody Interest interest) {
         return userService.addInterest(interest);
     }
@@ -88,11 +88,11 @@ public class UserController {
         return userService.setUsersLocation(user.getId(), id);
     }
 */
-    @PostMapping("/location/add")
+   /* @PostMapping("/location/add")
     public Location addLocation(@RequestBody Location location) {
         return userService.addLocation(location);
     }
-
+*/
 
     //Search Mappings:
 
