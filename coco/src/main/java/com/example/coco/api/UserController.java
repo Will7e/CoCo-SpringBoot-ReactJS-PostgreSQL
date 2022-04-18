@@ -4,7 +4,6 @@ import com.example.coco.dto.EditRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -132,10 +131,10 @@ public class UserController {
     //Skill Mappings:
 
 */
-    /**
+   /* /**
      * Returns all skills listed in the db
      */
-    @GetMapping("/skills/all")
+  /*  @GetMapping("/skills/all")
     public List<Skill> getAllSkills() {
         return userService.getAllSkills();
     }
@@ -145,19 +144,17 @@ public class UserController {
      */
 
 
-    /**
+   /* /**
      * Returns all skills of the current user.
      *
      * @param user User
      * @return List
      */
-    @GetMapping("/skills")
+   /* @GetMapping("/skills")
     public List<Skill> getMySkillNames(@AuthenticationPrincipal User user) {
         return userService.getMySkills(user);
     }
-
-
-
+*/
 
     // Add skill to user (Works on postman)
     @PutMapping("/skills/add")
@@ -181,11 +178,13 @@ public class UserController {
 
     }
 
-    //Edit user fullName ( works on postman)/
-    @PutMapping("/fullname/edit")
-    public String editUserName(@Valid @RequestBody EditRequest editRequest){
-        return userService.editUserFullName(editRequest);
+    //Edit user information ( works on postman)/
+    // Works now on web
+    @PutMapping("/edit/user")
+    public String editUser(@Valid @RequestBody EditRequest editRequest){
+        return userService.editUser(editRequest);
     }
+
 
 
 

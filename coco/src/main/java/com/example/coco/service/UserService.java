@@ -4,7 +4,6 @@ import com.example.coco.dao.UserDAO;
 import com.example.coco.dto.EditRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
-import com.example.coco.repository.SkillRepository;
 import com.example.coco.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,12 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -41,11 +38,11 @@ public class UserService implements UserDetailsService {
         return userDAO.findUserById(user.getId());
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
 
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> user = userDAO.findUserById(principalUser.getId());
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return null;
         }
         return user.get();
@@ -62,11 +59,12 @@ public class UserService implements UserDetailsService {
     public List<Interest> getAllInterests() {
         return userDAO.getAllInterests();
     }
-/*
-    public Interest addInterestToUser(long userId, long id) {
-        return userDAO.addInterestToUser(userId, id);
-    }
-*/
+
+    /*
+        public Interest addInterestToUser(long userId, long id) {
+            return userDAO.addInterestToUser(userId, id);
+        }
+    */
     public String getInterestByUser(User user) {
         return user.getInterests();
     }
@@ -144,21 +142,22 @@ public class UserService implements UserDetailsService {
 
 
 
+
     public String addSkillsToUSer(SkillRequest skillRequest) {
         Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
-        if (skill == null){
+        if (skill == null) {
             return "Skill not found";
         }
 
         User user = userDAO.findCurrentUserById(skillRequest.getUserId());
-        if (user == null){
-           return "User not found";
+        if (user == null) {
+            return "User not found";
         }
 
         List<Skill> userSkills = user.getSkills();
 
-        for (Skill skill1 : userSkills){
-            if  (skill1.equals(skill)){
+        for (Skill skill1 : userSkills) {
+            if (skill1.equals(skill)) {
                 return "Skill already exist in ur list";
             }
 
@@ -173,18 +172,18 @@ public class UserService implements UserDetailsService {
 
     public String removeUserSkill(SkillRequest skillRequest) {
         Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
-        if (skill == null){
+        if (skill == null) {
             return "Skill not found";
         }
         User user = userDAO.findCurrentUserById(skillRequest.getUserId());
-        if (user == null){
+        if (user == null) {
             return "User not found";
         }
 
         List<Skill> userSkills = user.getSkills();
 
-        for (Skill skill1 : userSkills){
-            if  (!skill1.equals(skill)){
+        for (Skill skill1 : userSkills) {
+            if (!skill1.equals(skill)) {
                 return "Skill does not exist in ur skill list";
             }
         }
@@ -201,9 +200,9 @@ public class UserService implements UserDetailsService {
         List<User> userList1 = new ArrayList<>();
 
 
-        for (User user: userList){
-            for (Skill skill : user.getSkills()){
-                if (skillId == skill.getId()){
+        for (User user : userList) {
+            for (Skill skill : user.getSkills()) {
+                if (Objects.equals(skillId, skill.getId())) {
                     userList1.add(user);
                     break;
                 }
@@ -213,17 +212,54 @@ public class UserService implements UserDetailsService {
         return userList1;
     }
 
-    public String editUserFullName(EditRequest editRequest) {
+    public String editUser(EditRequest editRequest) {
+        String message = "Edit success";
         User user = userDAO.findCurrentUserById(editRequest.getUserId());
 
-        if (user == null){
+        if (user == null) {
             return "User not found";
-        }else if (!editRequest.getFullName().equalsIgnoreCase(user.getFullName())){
-            user.setFullName(editRequest.getFullName());
-            userDAO.saveUser(user);
-            return "Name change succeed";
         }
-        return "Name is the same";
+        switch (editRequest.getEditCase()) {
+
+            case 1: user.setFullName(editRequest.getFullName());
+                userDAO.saveUser(user);
+                break;
+
+
+            case 2: user.setInterests(editRequest.getInterest());
+                userDAO.saveUser(user);
+                break;
+
+
+            case 3: user.setCountry(editRequest.getCountry());
+                userDAO.saveUser(user);
+                break;
+
+
+            case 4: user.setCity(editRequest.getCity());
+                userDAO.saveUser(user);
+                break;
+
+
+            case 5: user.setContacts(editRequest.getContacts());
+                userDAO.saveUser(user);
+                break;
+
+
+            case 6: user.setOccupation(editRequest.getOccupation());
+                userDAO.saveUser(user);
+                break;
+
+            case 7: user.setPresentation(editRequest.getPresentation());
+                userDAO.saveUser(user);
+                break;
+
+                default: return "Error";
+
+
+        }
+        return message;
+
     }
 
 
@@ -301,7 +337,6 @@ public class UserService implements UserDetailsService {
         return userDAO.setUsersLocation(userId, id);
     }
 */
-
 
 
 }

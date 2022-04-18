@@ -9,6 +9,7 @@ import lombok.Setter;
 public class EditRequest {
 
     private long userId;
+    private Integer editCase;
     private String fullName;
     private String occupation;
     private String interest;
