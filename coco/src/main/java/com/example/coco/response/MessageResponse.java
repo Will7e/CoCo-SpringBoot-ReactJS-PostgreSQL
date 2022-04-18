@@ -1,6 +1,6 @@
 package com.example.coco.response;
 
-public class MessageResponse {
+public class  MessageResponse {
     private String message;
 
     public MessageResponse(String message) {

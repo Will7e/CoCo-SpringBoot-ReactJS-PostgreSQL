@@ -1,5 +1,6 @@
-package com.example.coco.controller;
+package com.example.coco.api;
 
+import com.example.coco.dto.EditRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.service.UserService;
@@ -18,7 +19,6 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
-
 public class UserController {
     @Autowired
     private UserService userService;
@@ -162,15 +162,15 @@ public class UserController {
     // Add skill to user (Works on postman)
     @PutMapping("/skills/add")
     @PreAuthorize("hasRole('USER')")
-    public Skill addSkillsToUser(@Valid @RequestBody SkillRequest skillRequest){
+    public String addSkillsToUser(@Valid @RequestBody SkillRequest skillRequest){
         return userService.addSkillsToUSer(skillRequest);
     }
 
     // Remove skill from user (Works on postman)
-    @DeleteMapping("/skills/remove/{skillId}/{userId}")
+    @DeleteMapping("/skills/remove")
     @PreAuthorize("hasRole('USER')")
-    public Skill removeUserSkill(@PathVariable("skillId")Integer skillId,@PathVariable("userId") long userId){
-        return userService.removeUserSkill(skillId,userId);
+    public String removeUserSkill(@Valid @RequestBody SkillRequest skillRequest){
+        return userService.removeUserSkill(skillRequest);
     }
 
     // Find all user with by skill id ("Works on postman")
@@ -179,6 +179,12 @@ public class UserController {
     public List<User> findAllUserBySkills(@PathVariable ("skillId") Integer skillId){
         return userService.findAllUserBySkills(skillId);
 
+    }
+
+    //Edit user fullName ( works on postman)/
+    @PutMapping("/fullname/edit")
+    public String editUserName(@Valid @RequestBody EditRequest editRequest){
+        return userService.editUserFullName(editRequest);
     }
 
 

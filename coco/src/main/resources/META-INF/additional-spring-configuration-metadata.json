@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "Access-Control-Allow-Headers",
+      "type": "java.lang.String",
+      "description": "Description for Access-Control-Allow-Headers."
+    },
+    {
+      "name": "Access-Control-Allow-Methods",
+      "type": "java.lang.String",
+      "description": "Description for Access-Control-Allow-Methods."
+    },
+    {
+      "name": "Access-Control-Allow-Credentials",
+      "type": "java.lang.String",
+      "description": "Description for Access-Control-Allow-Credentials."
+    },
+    {
+      "name": "Access-Control-Allow-Origin",
+      "type": "java.lang.String",
+      "description": "Description for Access-Control-Allow-Origin."
+    }
+  ] }

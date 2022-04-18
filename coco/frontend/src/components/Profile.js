@@ -39,7 +39,7 @@ const Profile = () => {
         }
       }
     );
-  }, []);
+  }, [content]);
 
   const [toggle, setToggled] = useState(false);
 
@@ -65,7 +65,7 @@ const Profile = () => {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Add information</Card.Title>
+                <Card.Title as="h4">Edi information</Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form>
@@ -98,7 +98,7 @@ const Profile = () => {
                         <label>Skills</label>{" "}
                         <Button
                           onClick={() => {
-                            UserService.putUserSkill(skillJava, content.id);
+                            UserService.editFullName();
                           }}
                           className={buttonColor}
                         >

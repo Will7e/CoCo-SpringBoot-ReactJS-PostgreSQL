@@ -48,6 +48,7 @@ public class User {
     private String Presentation;
     private String interests;
     private String city;
+    private String country;
     private String contacts;
 
     @ManyToMany

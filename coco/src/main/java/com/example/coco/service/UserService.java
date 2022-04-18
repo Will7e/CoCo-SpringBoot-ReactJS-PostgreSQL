@@ -1,6 +1,7 @@
 package com.example.coco.service;
 
 import com.example.coco.dao.UserDAO;
+import com.example.coco.dto.EditRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.repository.SkillRepository;
@@ -143,45 +144,62 @@ public class UserService implements UserDetailsService {
 
 
 
-    public Skill addSkillsToUSer(SkillRequest skillRequest) {
+    public String addSkillsToUSer(SkillRequest skillRequest) {
         Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
         if (skill == null){
-            return null;
+            return "Skill not found";
         }
+
         User user = userDAO.findCurrentUserById(skillRequest.getUserId());
         if (user == null){
-           return null;
+           return "User not found";
         }
+
         List<Skill> userSkills = user.getSkills();
+
+        for (Skill skill1 : userSkills){
+            if  (skill1.equals(skill)){
+                return "Skill already exist in ur list";
+            }
+
+        }
         userSkills.add(skill);
         user.setSkills(userSkills);
         userDAO.saveUser(user);
 
-        return skill;
+        return "Skill added";
+
     }
 
-    public Skill removeUserSkill(Integer skillId, long userId) {
-        Skill skill = userDAO.getSkillById(skillId);
+    public String removeUserSkill(SkillRequest skillRequest) {
+        Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
         if (skill == null){
-            return null;
+            return "Skill not found";
         }
-        User user = userDAO.findCurrentUserById(userId);
+        User user = userDAO.findCurrentUserById(skillRequest.getUserId());
         if (user == null){
-            return null;
+            return "User not found";
         }
+
         List<Skill> userSkills = user.getSkills();
+
+        for (Skill skill1 : userSkills){
+            if  (!skill1.equals(skill)){
+                return "Skill does not exist in ur skill list";
+            }
+        }
         userSkills.remove(skill);
         user.setSkills(userSkills);
         userDAO.saveUser(user);
 
-        return skill;
+        return "Skill removed";
 
     }
 
     public List<User> findAllUserBySkills(Integer skillId) {
-
         List<User> userList = userDAO.getAllUsers();
         List<User> userList1 = new ArrayList<>();
+
 
         for (User user: userList){
             for (Skill skill : user.getSkills()){
@@ -191,10 +209,22 @@ public class UserService implements UserDetailsService {
                 }
             }
         }
+
         return userList1;
     }
 
+    public String editUserFullName(EditRequest editRequest) {
+        User user = userDAO.findCurrentUserById(editRequest.getUserId());
 
+        if (user == null){
+            return "User not found";
+        }else if (!editRequest.getFullName().equalsIgnoreCase(user.getFullName())){
+            user.setFullName(editRequest.getFullName());
+            userDAO.saveUser(user);
+            return "Name change succeed";
+        }
+        return "Name is the same";
+    }
 
 
     // Help Methods:
