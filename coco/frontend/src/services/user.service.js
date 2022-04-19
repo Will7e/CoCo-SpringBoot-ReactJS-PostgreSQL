@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import AuthService from "./auth.service";
 
 const API_URL = "http://localhost:8080/api/test/";
 const API_URL2 = "http://localhost:8080/api/";
@@ -39,13 +40,14 @@ const editUser = (data) => {
     headers: authHeader(),
   });
 };
-const deleteUSer = (data) => {
-  return axios.delete("http://localhost:8080/api/user/skills/remove", data, {
+const deleteSkill = (data) => {
+  return axios.delete("http://localhost:8080/api/user/skills/remove", {
     headers: authHeader(),
+    data,
   });
 };
 const addSkill = (data) => {
-  return axios.delete("http://localhost:8080/api/user/skills/add", data, {
+  return axios.put("http://localhost:8080/api/user/skills/add", data, {
     headers: authHeader(),
   });
 };
@@ -62,7 +64,7 @@ const UserService = {
   getUsersBySkillCS,
   getUsersBySkillSQL,
   editUser,
-  deleteUSer,
+  deleteSkill,
   addSkill,
 };
 

@@ -34,7 +34,7 @@ const BoardUser = () => {
 
   return (
     <div className="container">
-      <header className="jumbotron">
+      <header className="">
         {content.map((n, i) => {
           return (
             <h3 key={i}>

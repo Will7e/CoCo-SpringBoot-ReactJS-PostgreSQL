@@ -157,7 +157,7 @@ public class UserService implements UserDetailsService {
         List<Skill> userSkills = user.getSkills();
 
         for (Skill skill1 : userSkills) {
-            if (skill1.equals(skill)) {
+            if (skill1 == skill) {
                 return "Skill already exist in ur list";
             }
 
@@ -173,26 +173,26 @@ public class UserService implements UserDetailsService {
     public String removeUserSkill(SkillRequest skillRequest) {
         Skill skill = userDAO.getSkillById(skillRequest.getSkillId());
         if (skill == null) {
-            return "Skill not found";
+            return "Skill does not exist";
         }
         User user = userDAO.findCurrentUserById(skillRequest.getUserId());
         if (user == null) {
-            return "User not found";
+            return "User does not exist";
         }
 
         List<Skill> userSkills = user.getSkills();
 
-        for (Skill skill1 : userSkills) {
-            if (!skill1.equals(skill)) {
-                return "Skill does not exist in ur skill list";
+        for (int i = 0; i < userSkills.size(); i++){
+            if  (!userSkills.contains(skill)){
+                return "Skill does not exist in list";
             }
         }
+
         userSkills.remove(skill);
         user.setSkills(userSkills);
         userDAO.saveUser(user);
 
         return "Skill removed";
-
     }
 
     public List<User> findAllUserBySkills(Integer skillId) {
