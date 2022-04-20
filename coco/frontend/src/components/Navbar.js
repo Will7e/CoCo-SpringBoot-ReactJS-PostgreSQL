@@ -54,6 +54,9 @@ function Navbar() {
               <Link to={"/user"} className=" nav-link">
                 Home
               </Link>
+              <Link to={"/friend"} className="nav-friend nav-link">
+                Friends
+              </Link>
             </li>
           )}
         </div>

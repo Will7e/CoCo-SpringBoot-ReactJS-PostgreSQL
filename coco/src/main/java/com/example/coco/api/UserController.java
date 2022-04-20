@@ -1,8 +1,10 @@
 package com.example.coco.api;
 
 import com.example.coco.dto.EditRequest;
+import com.example.coco.dto.FriendRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
+import com.example.coco.service.FriendService;
 import com.example.coco.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +23,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
@@ -183,6 +187,12 @@ public class UserController {
     @PutMapping("/edit/user")
     public String editUser(@Valid @RequestBody EditRequest editRequest){
         return userService.editUser(editRequest);
+    }
+
+
+    @GetMapping("/all")
+    public List<User> getAllUser(){
+        return userService.getAllUser();
     }
 
 

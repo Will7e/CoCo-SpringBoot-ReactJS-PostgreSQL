@@ -11,13 +11,8 @@ const Home = () => {
       <img className="home-image" src={HomeImage}></img>
       <div class="centered">
         <h1>
-          <TypeText typing={1} text={"Coder Connect"} />{" "}
+          <TypeText typing={1} text={"Welcome to our community"} />{" "}
         </h1>
-        <div class="center2">
-          <h3>
-            <TypeText typing={2} text={"Welcome to our community"} />{" "}
-          </h3>
-        </div>
       </div>
     </div>
   );

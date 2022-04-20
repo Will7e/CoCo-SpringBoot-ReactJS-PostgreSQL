@@ -16,6 +16,9 @@ const getUserBoard = () => {
 const getUserInfo = () => {
   return axios.get(API_URL2 + "user", { headers: authHeader() });
 };
+const getAllUser = () => {
+  return axios.get("http://localhost:8080/api/user/all");
+};
 
 const getUsersBySkill = () => {
   return axios.get("http://localhost:8080/api/user/skills/user/1");
@@ -52,10 +55,30 @@ const addSkill = (data) => {
   });
 };
 
+const addFriend = (currentUserId, userToAddId) => {
+  return axios.post("http://localhost:8080/api/user/friends/add", {
+    headers: authHeader(),
+    currentUserId,
+    userToAddId,
+  });
+};
+const getFriendList = () => {
+  return axios.get("http://localhost:8080/api/user/friends/all");
+};
+
+const unFriend = (currentUserId, userToAddId) => {
+  return axios.delete("http://localhost:8080/api/user/skills/remove", {
+    headers: authHeader(),
+    currentUserId,
+    userToAddId,
+  });
+};
+
 const UserService = {
   getUsersBySkill,
   getPublicContent,
   getUserBoard,
+  getAllUser,
   getUserInfo,
   getUsersBySkillJS,
   getUsersBySkillPy,
@@ -66,6 +89,9 @@ const UserService = {
   editUser,
   deleteSkill,
   addSkill,
+  addFriend,
+  getFriendList,
+  unFriend,
 };
 
 export default UserService;

@@ -48,4 +48,8 @@ label {
   margin-left: 3rem;
   background-color: #232323;
   border-radius: 5px;
+  display: flex;
+}
+.nav-friend {
+  margin-left: 1rem;
 }

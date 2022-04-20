@@ -262,6 +262,16 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public List<User> getAllUser() {
+
+        List<User> userList = userDAO.getAllUsers();
+        if (!userList.isEmpty()){
+            return userList;
+        }
+
+        return null;
+    }
+
 
     // Help Methods:
 

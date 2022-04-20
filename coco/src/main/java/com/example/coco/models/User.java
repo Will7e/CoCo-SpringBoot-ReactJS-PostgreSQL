@@ -44,7 +44,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    
+
     private String occupation;
     private String Presentation;
     private String interests;
@@ -54,6 +54,10 @@ public class User {
 
     @ManyToMany
     private List<Skill> skills;
+
+    @ManyToMany
+    private List<Friend> friendList;
+
     @ManyToMany
     private List<SearchType> openForSearchType;
     @ManyToMany
@@ -69,6 +73,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.skills = new ArrayList<>();
+        this.friendList = new ArrayList<>();
     }
 
 }

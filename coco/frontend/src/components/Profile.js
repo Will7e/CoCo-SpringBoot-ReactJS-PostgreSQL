@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
+import Avatar from "react-avatar";
 
 import {
   Badge,
@@ -374,6 +375,10 @@ const Profile = () => {
           <Col md="4">
             <Card className="card-user">
               <Card.Body>
+                <div className="profile-avatar">
+                  <Avatar name={content.fullName} size="120" round={true} />{" "}
+                </div>
+
                 <div className="author">
                   <a href="#pablo" onClick={(e) => e.preventDefault()}>
                     <h1 className="title">{content.fullName}</h1>
