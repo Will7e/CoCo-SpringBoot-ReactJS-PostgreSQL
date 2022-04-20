@@ -8,18 +8,18 @@ public class Interest {
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
 
     public Interest() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer interestId) {
+    public void setId(Long interestId) {
         this.id = interestId;
     }
 

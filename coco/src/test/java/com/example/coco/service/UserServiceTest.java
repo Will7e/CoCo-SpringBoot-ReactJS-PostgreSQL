@@ -39,18 +39,18 @@ class UserServiceTest extends MockitoExtension {
         unitUnderTest = new UserService(userDAO);
 
         testInterest = new Interest();
-        testInterest.setId(1);
+        testInterest.setId((long) 1);
         testInterest.setName("Testing");
         testInterest.setDescription("I like testing.");
         testInterests = new ArrayList<>();
         testInterests.add(testInterest);
 
         testSkill1 = new Skill();
-        testSkill1.setId(1);
+        testSkill1.setId((long) 1);
         testSkill1.setName("Testing");
         testSkill1.setDescription("I am good at testing.");
         testSkill2 = new Skill();
-        testSkill2.setId(2);
+        testSkill2.setId((long) 2);
         testSkill2.setName("Debugging");
         testSkill2.setDescription("I am good at debugging.");
         testSkills = new ArrayList<>();

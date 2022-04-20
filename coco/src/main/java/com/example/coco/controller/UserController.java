@@ -21,8 +21,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public User getCurrentUser(){
-       return userService.getCurrentUser();
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
     }
 
     //Interest Mappings:
@@ -30,13 +30,11 @@ public class UserController {
     /**
      * Returns all the users interests.
      *
-     * @param user User
      * @return List
      */
     @GetMapping("/interests")
-    public List<Interest> getInterestsByUser(@AuthenticationPrincipal User user) {
-        if (user == null) return null;
-        return userService.getInterestByUser(user);
+    public List<Interest> getInterestsByUser() {
+        return userService.getInterestByUser(getCurrentUser());
     }
 
     /**
@@ -52,13 +50,12 @@ public class UserController {
     /**
      * Adds interest with given id to current user
      *
-     * @param id   long
-     * @param user User
+     * @param id long
      * @return Interest
      */
     @PutMapping("/interests/{id}")
-    public Interest addInterestToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.addInterestToUser(user.getId(), id);
+    public Interest addInterestToUser(@PathVariable("id") long id) {
+        return userService.addInterestToUser(getCurrentUser().getId(), id);
     }
 
     /**
@@ -80,8 +77,8 @@ public class UserController {
     }
 
     @PutMapping("/location/{id}")
-    public Location setUsersLocation(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.setUsersLocation(user.getId(), id);
+    public Location setUsersLocation(@PathVariable("id") long id) {
+        return userService.setUsersLocation(getCurrentUser().getId(), id);
     }
 
     @PostMapping("/location/add")
@@ -89,12 +86,17 @@ public class UserController {
         return userService.addLocation(location);
     }
 
+    @GetMapping("/location/my")
+    public Location getLocation() {
+        return userService.getLocation(getCurrentUser());
+    }
+
 
     //Search Mappings:
 
     @GetMapping("/search/open")
-    public List<SearchType> getOpenFor(@AuthenticationPrincipal User user) {
-        return userService.openFor(user);
+    public List<SearchType> getOpenFor() {
+        return userService.openFor(getCurrentUser());
     }
 
     @PostMapping("/search/add")
@@ -103,8 +105,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<Search> getMatchingSearches(@AuthenticationPrincipal User user) {
-        return userService.getMatchingSearches(user);
+    public List<Search> getMatchingSearches() {
+        return userService.getMatchingSearches(getCurrentUser());
     }
 
     /**
@@ -119,8 +121,8 @@ public class UserController {
     }
 
     @PutMapping("search/{id}")
-    public User connectViaSearch(@AuthenticationPrincipal User user, @PathVariable("id") long id) {
-        return userService.connectViaSearch(user, id);
+    public User connectViaSearch(@PathVariable("id") long id) {
+        return userService.connectViaSearch(getCurrentUser(), id);
     }
     //Skill Mappings:
 
@@ -144,24 +146,22 @@ public class UserController {
     /**
      * Returns all skills of the current user.
      *
-     * @param user User
      * @return List
      */
     @GetMapping("/skills")
-    public List<Skill> getMySkillNames(@AuthenticationPrincipal User user) {
-        return userService.getMySkills(user);
+    public List<Skill> getMySkills() {
+        return userService.getMySkills(getCurrentUser());
     }
 
     /**
      * Adds skill with given id to current user
      *
      * @param id   long
-     * @param user User
      * @return Interest
      */
     @PutMapping("/skills/{id}")
-    public Skill addSkillToUser(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        return userService.addSkillToUser(user, id);
+    public Skill addSkillToUser(@PathVariable("id") long id) {
+        return userService.addSkillToUser(getCurrentUser(), id);
     }
 
 

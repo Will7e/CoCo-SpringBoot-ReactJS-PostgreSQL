@@ -141,7 +141,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Skill addSkillToUser(User user, long id) {
-        Optional<Skill> maybeSkill = userDAO.getSkillById(id);
+        Optional<Skill> maybeSkill = userDAO.getSkillById((int) id);
         if(maybeSkill.isEmpty()) return null;
         List<Skill> userSkills = user.getSkills();
         userSkills.add(maybeSkill.get());
@@ -222,5 +222,8 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public Location getLocation(User user) {
+        return user.getLocation();
+    }
 }
 

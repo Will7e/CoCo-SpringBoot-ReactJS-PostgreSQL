@@ -45,6 +45,7 @@ public class UserDAO {
         List<Interest> interests = user.getInterests();
         interests.add(interest);
         user.setInterests(interests);
+        userRepository.save(user);
         return interest;
     }
 
@@ -65,6 +66,7 @@ public class UserDAO {
         User user = maybeUser.get();
         Location location = maybeLocation.get();
         user.setLocation(location);
+        userRepository.save(user);
         return location;
     }
 
@@ -102,6 +104,5 @@ public class UserDAO {
     public Optional<Skill> getSkillById(long id) {
         return skillRepository.findById(id);
     }
-
 
 }
