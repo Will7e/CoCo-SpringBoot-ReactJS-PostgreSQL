@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface FriendRepository extends JpaRepository<Friend,Long> {
 
-    Friend findFriendByFriendId(long id);
+
 
     Friend  removeFriendByFriend(User friend);
 }

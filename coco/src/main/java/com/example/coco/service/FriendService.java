@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FriendService {
@@ -50,23 +51,25 @@ public class FriendService {
     public String unFriend(FriendRequest friendRequest) {
 
 
+
         User currentUser = userRepository.findUserById(friendRequest.getUserId());
         if (currentUser == null){
             return "current user not found";
         }
 
-        Friend friend = friendRepository.findFriendByFriendId(friendRequest.getFriendId());
+        Optional<Friend> friend2 = friendRepository.findById(friendRequest.getFriendId());
+
+        if (friend2.isPresent()){
+            Friend friend1 = friend2.get();
+            if (currentUser.getFriendList().contains(friend1)){
+                currentUser.getFriendList().remove(friend1);
+                userRepository.save(currentUser);
+                return "removed";
+            }
+        }
 
 
-      for (int i = 0; i< currentUser.getFriendList().size(); i++){
-          if (currentUser.getFriendList().contains(friend)){
-              currentUser.getFriendList().remove(friend);
-              userRepository.save(currentUser);
-              return "friend removed";
 
-          }
-
-      }
             return "not removed";
 
     }

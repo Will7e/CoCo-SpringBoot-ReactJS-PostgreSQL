@@ -13,7 +13,7 @@ public class Friend {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long     id;
 
 
     @OneToOne(cascade = CascadeType.ALL)
