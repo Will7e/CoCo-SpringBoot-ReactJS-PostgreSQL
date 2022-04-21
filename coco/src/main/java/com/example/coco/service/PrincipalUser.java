@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class PrincipalUser implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities = new HashSet<>();
 
     public PrincipalUser(Long id, String fullName, String username, String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
@@ -35,6 +36,13 @@ public class PrincipalUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public PrincipalUser(String fullName, String userName, String email, String password) {
+        this.fullName = fullName;
+        this.username = userName;
+        this.email = email;
+        this.password = password;
     }
 
     public static PrincipalUser build(User user) {

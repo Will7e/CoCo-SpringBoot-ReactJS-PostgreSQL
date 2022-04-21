@@ -1,5 +1,7 @@
 package com.example.coco.models;
 
+import com.example.coco.dto.SkillRequest;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +18,7 @@ public class Skill {
 
 
 
-    public Integer getId() {
+    public Integer   getId() {
         return id;
     }
 

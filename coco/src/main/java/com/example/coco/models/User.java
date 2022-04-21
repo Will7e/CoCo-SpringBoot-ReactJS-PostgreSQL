@@ -1,5 +1,6 @@
 package com.example.coco.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
@@ -56,6 +57,7 @@ public class User {
     private List<Skill> skills;
 
     @ManyToMany
+    @JsonIgnore
     private List<User> friendList;
 
     @ManyToMany

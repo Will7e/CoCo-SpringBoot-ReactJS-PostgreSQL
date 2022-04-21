@@ -11,8 +11,6 @@
 }
 
 .home-image {
-  width: 1710px;
-  height: 800px;
   object-fit: cover;
   z-index: 0;
   filter: brightness(50%);

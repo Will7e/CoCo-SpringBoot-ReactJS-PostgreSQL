@@ -33,7 +33,10 @@ const getUsersBySkillHtlmCss = () => {
   return axios.get("http://localhost:8080/api/user/skills/user/4");
 };
 const getUsersBySkillCS = () => {
-  return axios.get("http://localhost:8080/api/user/skills/user/5");
+  return (
+    axios.get("http://localhost:8080/api/user/skills/user/5"),
+    { headers: authHeader() }
+  );
 };
 const getUsersBySkillSQL = () => {
   return axios.get("http://localhost:8080/api/user/skills/user/6");
