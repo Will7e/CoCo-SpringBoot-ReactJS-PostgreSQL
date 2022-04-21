@@ -73,3 +73,8 @@ ul {
   background-color: rgb(23, 115, 254) !important;
   color: white;
 }
+.friends-title {
+  color: white !important;
+  margin-left: 3rem;
+  padding: 1rem;
+}

@@ -55,22 +55,21 @@ const addSkill = (data) => {
   });
 };
 
-const addFriend = (currentUserId, userToAddId) => {
+const addFriend = (userId, friendId) => {
   return axios.post("http://localhost:8080/api/user/friends/add", {
+    userId,
+    friendId,
     headers: authHeader(),
-    currentUserId,
-    userToAddId,
   });
 };
-const getFriendList = () => {
-  return axios.get("http://localhost:8080/api/user/friends/all");
+const getFriendList = (userId) => {
+  return axios.get(`http://localhost:8080/api/user/friends/${userId}`);
 };
 
-const unFriend = (currentUserId, userToAddId) => {
-  return axios.delete("http://localhost:8080/api/user/skills/remove", {
+const unFriend = (data) => {
+  return axios.delete("http://localhost:8080/api/user/friends/delete", {
     headers: authHeader(),
-    currentUserId,
-    userToAddId,
+    data,
   });
 };
 

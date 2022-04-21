@@ -4,7 +4,6 @@ import com.example.coco.dto.EditRequest;
 import com.example.coco.dto.FriendRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
-import com.example.coco.service.FriendService;
 import com.example.coco.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -194,6 +193,23 @@ public class UserController {
     public List<User> getAllUser(){
         return userService.getAllUser();
     }
+
+
+    @PostMapping("/friends/add")
+    public String addFriend(@Valid @RequestBody FriendRequest friendRequest){
+        return userService.addFriend(friendRequest);
+    }
+
+    @GetMapping("/friends/{id}")
+    public List<User> getFriendList(@PathVariable ("id") long id){
+        return userService.getFriendList(id);
+    }
+
+    @DeleteMapping("/friends/delete")
+    public String unfriend(@Valid @RequestBody FriendRequest friendRequest){
+        return userService.unfriend(friendRequest);
+    }
+
 
 
 

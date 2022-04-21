@@ -56,7 +56,7 @@ public class User {
     private List<Skill> skills;
 
     @ManyToMany
-    private List<Friend> friendList;
+    private List<User> friendList;
 
     @ManyToMany
     private List<SearchType> openForSearchType;

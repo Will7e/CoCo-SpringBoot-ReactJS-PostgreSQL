@@ -2,6 +2,7 @@ package com.example.coco.service;
 
 import com.example.coco.dao.UserDAO;
 import com.example.coco.dto.EditRequest;
+import com.example.coco.dto.FriendRequest;
 import com.example.coco.dto.SkillRequest;
 import com.example.coco.models.*;
 import com.example.coco.repository.UserRepository;
@@ -263,13 +264,60 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUser() {
-
         List<User> userList = userDAO.getAllUsers();
         if (!userList.isEmpty()){
             return userList;
         }
 
         return null;
+    }
+
+    public String addFriend(FriendRequest friendRequest) {
+        User user = userDAO.findCurrentUserById(friendRequest.getUserId());
+        if (user == null){
+            return "Cant find user";
+        }
+        User friend = userDAO.findCurrentUserById(friendRequest.getFriendId());
+
+        if (friend == null){
+            return "Cant find friend";
+        }
+
+        if (!user.getFriendList().contains(friend)){
+            user.getFriendList().add(friend);
+            userDAO.saveUser(user);
+            return "User added";
+        }
+
+        return "User is already friend";
+
+
+    }
+
+    public List<User> getFriendList(long id) {
+        User user = userDAO.findCurrentUserById(id);
+            return user.getFriendList();
+
+
+    }
+
+    public String unfriend(FriendRequest friendRequest) {
+        User user = userDAO.findCurrentUserById(friendRequest.getUserId());
+        if (user == null){
+            return "Cant find user";
+        }
+        User friend = userDAO.findCurrentUserById(friendRequest.getFriendId());
+
+        if (friend == null){
+            return "Cant find friend";
+        }
+        if  (user.getFriendList().contains(friend)){
+            user.getFriendList().remove(friend);
+            userDAO.saveUser(user);
+            return "Removed";
+        }
+
+        return "Not removed";
     }
 
 

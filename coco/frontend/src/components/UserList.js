@@ -1,8 +1,33 @@
 import React from "react";
 import Avatar from "react-avatar";
+import UserService from "../services/user.service";
 import "./UserList.css";
 
-function UserList({ name, location, country, contacts, skill }) {
+function UserList({
+  name,
+  location,
+  country,
+  contacts,
+  skill,
+  userId,
+  friendId,
+  a,
+  btntext,
+}) {
+  const data = {
+    userId: userId,
+    friendId: friendId,
+  };
+
+  const handleFriends = (i, userId, friendId) => {
+    if (i === 1) {
+      UserService.addFriend(userId, friendId);
+    }
+    if (i === 2) {
+      UserService.unFriend(data);
+    }
+  };
+
   return (
     <div class="filter-result">
       <div class="job-box d-md-flex align-items-center justify-content-between mb-30">
@@ -35,10 +60,15 @@ function UserList({ name, location, country, contacts, skill }) {
             </ul>
           </div>
         </div>
-        <div class="job-right my-4 flex-shrink-0">
-          <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light">
-            Add Friend
-          </a>
+        <div
+          onClick={() => {
+            handleFriends(a, userId, friendId);
+          }}
+          class="job-right my-4 flex-shrink-0"
+        >
+          <button class="btn d-block w-100 d-sm-inline-block btn-light">
+            {btntext}
+          </button>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import "./App.css";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
+import BoardUserFriends from "./components/BoardUserFriends";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/user" element={<BoardUser />} />
+          <Route path="/friends" element={<BoardUserFriends />} />
         </Routes>
       </div>
     </BrowserRouter>

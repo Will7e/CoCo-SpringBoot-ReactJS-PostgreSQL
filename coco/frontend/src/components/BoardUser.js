@@ -194,10 +194,10 @@ const BoardUser = () => {
                       class="btn btn-lg btn-block btn-light btn-custom"
                       id="contact-submit"
                       onClick={() => {
-                        printUserList(7);
+                        printUserList(1);
                       }}
                     >
-                      All
+                      Java
                     </button>
                   </div>
                   <div class="col-md-6 col-lg-3 my-3">
@@ -266,10 +266,10 @@ const BoardUser = () => {
                       class="btn btn-lg btn-block btn-light btn-custom"
                       id="contact-submit"
                       onClick={() => {
-                        printUserList(1);
+                        printUserList(7);
                       }}
                     >
-                      Java
+                      All
                     </button>
                   </div>
                 </div>
@@ -284,6 +284,10 @@ const BoardUser = () => {
                     country={n.country}
                     contacts={n.contacts}
                     skill={n.skills}
+                    userId={currentUser.id}
+                    friendId={n.id}
+                    a={1}
+                    btntext="Add Friend"
                   >
                     {" "}
                   </UserList>
