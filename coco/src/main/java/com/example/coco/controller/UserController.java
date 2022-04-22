@@ -92,12 +92,29 @@ public class UserController {
     }
 
 
-    //Search Mappings:
+    //SearchType Mappings:
 
     @GetMapping("/search/open")
     public List<SearchType> getOpenFor() {
         return userService.openFor(getCurrentUser());
     }
+
+    @GetMapping("/search/types")
+    public List<SearchType> getSearchTypes() {
+        return userService.getSearchTypes();
+    }
+
+    @PutMapping("/search/add-open/{id}")
+    public List<SearchType> addOpenFor(@PathVariable("id") long id){
+        return userService.addOpenFor(getCurrentUser(), id);
+    }
+
+    @PostMapping("/search/addtype")
+    public SearchType addSearchType(@RequestBody SearchType searchType) {
+        return userService.addSearchType(searchType);
+    }
+
+    //SearchType Mappings:
 
     @PostMapping("/search/add")
     public Search addSearch(@RequestBody Search search) {

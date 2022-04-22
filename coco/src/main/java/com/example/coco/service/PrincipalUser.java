@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PrincipalUser implements UserDetails {
@@ -33,6 +34,14 @@ public class PrincipalUser implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
+
+   /* // additional constructor to run with test
+    public PrincipalUser(Long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }*/
 
     public static PrincipalUser build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()

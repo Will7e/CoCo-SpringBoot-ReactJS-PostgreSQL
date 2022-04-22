@@ -15,6 +15,7 @@ public class UserDAO {
     SkillRepository skillRepository;
     InterestRepository interestRepository;
     SearchRepository searchRepository;
+    SearchTypeRepository searchTypeRepository;
     LocationRepository locationRepository;
 
     public void saveUser(User user) {
@@ -76,6 +77,7 @@ public class UserDAO {
         return searchRepository.save(search);
     }
 
+
     public List<Search> getAllSearches() {
         return searchRepository.findAll();
     }
@@ -105,4 +107,19 @@ public class UserDAO {
         return skillRepository.findById(id);
     }
 
+    public Optional<SearchType> getSearchTypeById(long id) {
+        return searchTypeRepository.findById(id);
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public List<SearchType> getAllSearchTypes() {
+        return searchTypeRepository.findAll();
+    }
+
+    public SearchType addSearchType(SearchType searchType) {
+        return searchTypeRepository.save(searchType);
+    }
 }

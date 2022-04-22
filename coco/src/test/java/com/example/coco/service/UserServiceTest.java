@@ -2,11 +2,13 @@ package com.example.coco.service;
 
 import com.example.coco.dao.UserDAO;
 import com.example.coco.models.*;
+import com.example.coco.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +21,20 @@ class UserServiceTest extends MockitoExtension {
 
     static UserService unitUnderTest;
     static UserDAO userDAO;
+    static UserRepository userRepository;
+    static PrincipalUser testPrincipalUser;
+
     static Interest testInterest;
     static List<Interest> testInterests;
     static Skill testSkill1, testSkill2;
     static List<Skill> testSkills;
     static User testUser1, testUser2;
+    static Optional<User> maybeTestUser1;
+    static UserDetails testUserDetails;
     static List<User> testUsers;
     static Location testLocation;
     static List<Location> testLocations;
-    static SearchType testSearchType;
+    static SearchType testSearchType1, testSearchType2;
     static List<SearchType> testSearchTypes;
     static Search testSearch;
     static List<Search> testSearches;
@@ -35,8 +42,10 @@ class UserServiceTest extends MockitoExtension {
     @BeforeAll
     public static void init() {
         userDAO = Mockito.mock(UserDAO.class);
-
+        userRepository = Mockito.mock(UserRepository.class);
         unitUnderTest = new UserService(userDAO);
+        testPrincipalUser = new PrincipalUser((long) 1, "Tester1", "test1@test.test", "password",
+                null);
 
         testInterest = new Interest();
         testInterest.setId((long) 1);
@@ -62,12 +71,18 @@ class UserServiceTest extends MockitoExtension {
         testLocations = new ArrayList<>();
         testLocations.add(testLocation);
 
-        testSearchType = new SearchType();
-        testSearchType.setId(1);
-        testSearchType.setName("Test");
-        testSearchType.setDescription("We might want to test hanging out.");
+        testSearchType1 = new SearchType();
+        testSearchType1.setId(1);
+        testSearchType1.setName("Test");
+        testSearchType1.setDescription("We might want to test hanging out.");
+
+        testSearchType2 = new SearchType();
+        testSearchType2.setId(2);
+        testSearchType2.setName("Test II");
+        testSearchType2.setDescription("We might want to test hanging out again.");
+
         testSearchTypes = new ArrayList<>();
-        testSearchTypes.add(testSearchType);
+        testSearchTypes.add(testSearchType1);
 
         testUser1 = new User("Tester1", "test1@test.test", "password");
         testUser1.setId((long) 1);
@@ -77,6 +92,7 @@ class UserServiceTest extends MockitoExtension {
         testUser1.setOpenForSearchType(testSearchTypes);
         testUsers = new ArrayList<>();
         testUsers.add(testUser1);
+        maybeTestUser1 = Optional.of(testUser1);
 
         testUser2 = new User("Tester2", "test2@test.test", "password");
         testUser2.setId((long) 1);
@@ -97,6 +113,25 @@ class UserServiceTest extends MockitoExtension {
         testSearches = new ArrayList<>();
         testSearches.add(testSearch);
 
+    }
+
+    @Test
+    void loadUserByUsername() {
+        // Spring Security
+        //setup
+        Mockito.when(userRepository.findByUsername(any())).thenReturn(Optional.ofNullable(testUser1));
+
+        //test
+        PrincipalUser actualUserDetails = (PrincipalUser) unitUnderTest.loadUserByUsername("Tester1");
+        System.out.println(actualUserDetails.getUsername());
+        //verify
+        assertEquals("Tester1", actualUserDetails.getUsername());
+
+    }
+
+    @Test
+    void getCurrentUser() {
+        // Spring Security
     }
 
     @Test
@@ -185,6 +220,29 @@ class UserServiceTest extends MockitoExtension {
     }
 
     @Test
+    void getLocation() {
+        //setup
+
+        //test
+        Location actualLocation = unitUnderTest.getLocation(testUser1);
+
+        //verify
+        assertEquals(1, actualLocation.getId());
+        assertEquals("Testeristan", actualLocation.getName());
+    }
+
+    @Test
+    void setUsersLocation() {
+        //setup
+        Mockito.when(userDAO.setUsersLocation(1, 1)).thenReturn(testLocation);
+        //test
+        Location actualLocation = unitUnderTest.setUsersLocation(1, 1);
+
+        //verify
+        assertEquals(1, actualLocation.getId());
+    }
+
+    @Test
     void openFor() {
         //setup
 
@@ -196,6 +254,21 @@ class UserServiceTest extends MockitoExtension {
         assertEquals(1, actualSearchTypes.get(0).getId());
         assertEquals("Test", actualSearchTypes.get(0).getName());
         assertEquals("We might want to test hanging out.", actualSearchTypes.get(0).getDescription());
+    }
+
+    @Test
+    void addOpenFor() {
+       //setup
+        Mockito.when(userDAO.getSearchTypeById(2)).thenReturn(Optional.of(testSearchType2));
+
+        //test
+
+        List<SearchType> actualSearchTypes = unitUnderTest.addOpenFor(testUser1, 2);
+
+        //verify
+        assertEquals(2, actualSearchTypes.get(1).getId());
+       assertTrue(testUser1.getOpenForSearchType().contains(testSearchType2));
+       Mockito.verify(userDAO, Mockito.times(1)).save(testUser1);
     }
 
     @Test
@@ -211,6 +284,18 @@ class UserServiceTest extends MockitoExtension {
         assertEquals(1, actualSearch.getUserId());
         assertEquals(1, actualSearch.getSearchTypeId());
 
+    }
+
+    @Test
+    void getSearchTypes() {
+        //setup
+        Mockito.when(userDAO.getAllSearchTypes()).thenReturn(testSearchTypes);
+
+        //test
+        List<SearchType> actualSearchTypes = unitUnderTest.getSearchTypes();
+
+        //verify
+        assertEquals(1, actualSearchTypes.get(0).getId());
     }
 
     @Test
@@ -306,14 +391,16 @@ class UserServiceTest extends MockitoExtension {
 
     }
 
+
     @Test
-    void setUsersLocation() {
+    void addSearchType() {
         //setup
-        Mockito.when(userDAO.setUsersLocation(1, 1)).thenReturn(testLocation);
+        Mockito.when(userDAO.addSearchType(testSearchType1)).thenReturn(testSearchType1);
+
         //test
-        Location actualLocation = unitUnderTest.setUsersLocation(1, 1);
+        SearchType actualSearchType = unitUnderTest.addSearchType(testSearchType1);
 
         //verify
-        assertEquals(1, actualLocation.getId());
+        assertEquals(1, actualSearchType.getId());
     }
 }

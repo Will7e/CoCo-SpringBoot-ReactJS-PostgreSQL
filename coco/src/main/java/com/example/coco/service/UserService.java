@@ -36,9 +36,9 @@ public class UserService implements UserDetailsService {
         return PrincipalUser.build(user);
     }
 
-    public Optional<User> getUserFirstName(User user) {
+    /*public Optional<User> getUserFirstName(User user) {
         return userDAO.findUserById(user.getId());
-    }
+    }*/
 
     public User getCurrentUser(){
 
@@ -80,9 +80,27 @@ public class UserService implements UserDetailsService {
         return userDAO.addLocation(location);
     }
 
+    public Location getLocation(User user) {
+        return user.getLocation();
+    }
+
+    public Location setUsersLocation(long userId, long id) {
+        return userDAO.setUsersLocation(userId, id);
+    }
+
     // Search methods
 
     public List<SearchType> openFor(User user) {
+        return user.getOpenForSearchType();
+    }
+
+    public List<SearchType> addOpenFor(User user, long id) {
+        List<SearchType> searchTypes = user.getOpenForSearchType();
+        Optional<SearchType> mayBeSearchType = userDAO.getSearchTypeById(id);
+        if (mayBeSearchType.isEmpty()) return null;
+        searchTypes.add(mayBeSearchType.get());
+        user.setOpenForSearchType(searchTypes);
+        userDAO.save(user);
         return user.getOpenForSearchType();
     }
 
@@ -217,13 +235,12 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Location setUsersLocation(long userId, long id) {
-        return userDAO.setUsersLocation(userId, id);
+    public List<SearchType> getSearchTypes() {
+        return userDAO.getAllSearchTypes();
     }
 
-
-    public Location getLocation(User user) {
-        return user.getLocation();
+    public SearchType addSearchType(SearchType searchType) {
+        return userDAO.addSearchType(searchType);
     }
 }
 
