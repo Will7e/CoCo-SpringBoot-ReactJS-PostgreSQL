@@ -1,4 +1,4 @@
-# CoderConnect Web
+#COCO
 ## Website to connect coder
 ## SpringBoot - Backend
 ## ReactJS - Frontend
