@@ -1,6 +1,6 @@
 # COCO
 ## Website to connect coder
-## SpringBoot - Backend
+## SpringBoot - Backend API
 ## ReactJS - Frontend
 ## PostgreSQL - Database
 ## Mockito Test
